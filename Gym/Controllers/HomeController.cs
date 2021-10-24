@@ -13,8 +13,12 @@ namespace Gym.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly gymContext _db;
 
-        gymContext _db = new gymContext();
+        public HomeController(gymContext gymContext)
+        {
+            _db = gymContext;
+        }
 
         public IActionResult Index()
         {

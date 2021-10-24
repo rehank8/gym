@@ -14,7 +14,11 @@ namespace Gym.Controllers
 {
     public class AccountController : Controller
     {
-        gymContext _db = new gymContext();
+        private readonly gymContext _db;
+        public AccountController(gymContext gymContext)
+        {
+            _db = gymContext;
+        }
         [HttpGet]
         public IActionResult Login()
         {

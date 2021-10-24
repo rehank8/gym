@@ -6,10 +6,6 @@ namespace Gym.Models
 {
     public partial class gymContext : DbContext
     {
-        public gymContext()
-        {
-        }
-
         public gymContext(DbContextOptions<gymContext> options)
             : base(options)
         {
@@ -18,14 +14,14 @@ namespace Gym.Models
         public virtual DbSet<Appointments> Appointments { get; set; }
         public virtual DbSet<UserModel> UserModel { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!optionsBuilder.IsConfigured)
-            {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer("Server=DESKTOP-R5S2I97;Database=gym;Trusted_Connection=True;");
-            }
-        }
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)  
+        //{
+        //   if (!optionsBuilder.IsConfigured)
+        //   {
+        //#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
+        //                optionsBuilder.UseSqlServer("Server=DESKTOP-R5S2I97;Database=gym;Trusted_Connection=True;");
+        //    }
+        //}
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
