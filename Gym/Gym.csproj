@@ -84,6 +84,7 @@
   <ItemGroup>
     <Folder Include="Areas\Identity\Services\" />
     <Folder Include="Views\Account\" />
+    <Folder Include="wwwroot\admin\" />
   </ItemGroup>
 
 </Project>

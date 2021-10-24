@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Gym.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Authorization;
+using System.IO;
 
 namespace Gym.Controllers
 {
@@ -115,7 +116,7 @@ namespace Gym.Controllers
                     customer.Phone = appointment.Phone;
                     customer.Email = appointment.Email;
                     customer.Date = appointment.Date;
-               
+
                 }
                 _db.Appointments.Update(customer);
                 _db.SaveChanges();
@@ -135,6 +136,29 @@ namespace Gym.Controllers
             return View();
         }
 
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        public ActionResult FileUpload(IFormFile fileupload)
+        {
+            if (fileupload != null)
+            {
+                if (fileupload == null || fileupload.Length == 0)
+                    return Content("file not selected");
+
+                var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "admin");
+                if (!Directory.Exists(path))
+                {
+                    Directory.CreateDirectory(path);
+                }
+                path = path + "\\" + fileupload.FileName;
+                using (var stream = new FileStream(path, FileMode.Create))
+                {
+                    fileupload.CopyTo(stream);
+                }
+            }
+
+            return RedirectToAction("Videos");
+        }
 
         [Authorize(Roles = "Admin")]
         public IActionResult GetCertification()
