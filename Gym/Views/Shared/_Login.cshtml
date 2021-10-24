@@ -1,0 +1,31 @@
+﻿@model Gym.Models.UserModel
+
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-md-12">
+			<form method="post" action="~/login/loginsave">
+				<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+				<div class="form-group">
+					<label asp-for="UserName" class="control-label"></label>
+					<input asp-for="UserName" class="form-control" />
+					<span asp-validation-for="UserName" class="text-danger"></span>
+				</div>
+				<div class="form-group">
+					<label asp-for="Password" class="control-label"></label>
+					<input asp-for="Password" type="password" class="form-control" />
+					<span asp-validation-for="Password" class="text-danger"></span>
+				</div>
+
+				<div class="form-group">
+					<input type="submit" class="btn form-control" value="Login">
+					</input>
+
+					@*<input type="submit" value="Login" class="btn btn-default" />*@
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+
+

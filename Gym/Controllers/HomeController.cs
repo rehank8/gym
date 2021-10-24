@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Gym.Models;
+using Microsoft.AspNetCore.Http;
 
 namespace Gym.Controllers
 {
@@ -17,11 +18,17 @@ namespace Gym.Controllers
 		{
 			return View();
 		}
-		[HttpPost]
-		public IActionResult Login()
+
+		public IActionResult DemoVideo()
 		{
-			return RedirectToAction(nameof(GetData));
+			return View();
 		}
+
+		//[HttpPost]
+		//public IActionResult Login()
+		//{
+		//	return RedirectToAction(nameof(GetData));
+		//}
 
 		[HttpGet]
 		public IActionResult GetData()
@@ -70,6 +77,25 @@ namespace Gym.Controllers
 		public IActionResult Error()
 		{
 			return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+		}
+
+		[HttpGet]
+		public IActionResult EditCustomer(long? id)
+		{
+			Appointments model = new Appointments();
+			if (id.HasValue)
+			{
+				Appointments customer = _db.Set<Appointments>().SingleOrDefault(c => c.Id == id.Value);
+				if (customer != null)
+				{
+					model.Id = customer.Id;
+					model.Name = customer.Name;
+					model.Phone = customer.Phone;
+					model.Email = customer.Email;
+					model.Date = customer.Date;
+				}
+			}
+			return View(model);
 		}
 	}
 }

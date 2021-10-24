@@ -1,7 +1,6 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Gym.Models;
 
 namespace Gym.Models
 {
@@ -17,6 +16,7 @@ namespace Gym.Models
         }
 
         public virtual DbSet<Appointments> Appointments { get; set; }
+        public virtual DbSet<UserModel> UserModel { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -51,8 +51,19 @@ namespace Gym.Models
                     .HasMaxLength(50)
                     .IsUnicode(false);
             });
-        }
 
-        public DbSet<Gym.Models.UserForm> UserForm { get; set; }
+            modelBuilder.Entity<UserModel>(entity =>
+            {
+                entity.Property(e => e.Password)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.UserName)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+            });
+        }
     }
 }
