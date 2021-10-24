@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Gym.Areas.Identity.Data;
 using Gym.Models;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -33,7 +34,7 @@ namespace Gym
 				options.CheckConsentNeeded = context => true;
 				options.MinimumSameSitePolicy = SameSiteMode.None;
 			});
-
+			services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
 			services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 		}
 

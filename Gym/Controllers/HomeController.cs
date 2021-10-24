@@ -6,96 +6,140 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Gym.Models;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Gym.Controllers
 {
-	public class HomeController : Controller
-	{
+    public class HomeController : Controller
+    {
 
-		gymContext _db = new gymContext();
+        gymContext _db = new gymContext();
 
-		public IActionResult Index()
-		{
-			return View();
-		}
+        public IActionResult Index()
+        {
+            return View();
+        }
 
-		public IActionResult DemoVideo()
-		{
-			return View();
-		}
+        [Authorize(Roles = "Admin, User")]
+        [HttpGet]
+        public IActionResult DemoVideo()
+        {
+            return View();
+        }
 
-		//[HttpPost]
-		//public IActionResult Login()
-		//{
-		//	return RedirectToAction(nameof(GetData));
-		//}
+        //[HttpPost]
+        //public IActionResult Login()
+        //{
+        //	return RedirectToAction(nameof(GetData));
+        //}
 
-		[HttpGet]
-		public IActionResult GetData()
-		{
-			return View(_db.Appointments.ToList());
-		}
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        public IActionResult GetData()
+        {
+            return View(_db.Appointments.ToList());
+        }
 
-		[HttpPost]
-		public IActionResult Index(Appointments appointment)
-		{
-			if (ModelState.IsValid)
-			{
-				_db.Appointments.Add(appointment);
-				_db.SaveChanges();
-				ModelState.Clear();
-			}
+        [HttpPost]
+        public IActionResult Index(Appointments appointment)
+        {
+            if (ModelState.IsValid)
+            {
+                _db.Appointments.Add(appointment);
+                _db.SaveChanges();
+                ModelState.Clear();
+            }
 
-			return View();
-		}
+            return View();
+        }
 
-		public IActionResult HomePage()
-		{
-			return View();
-		}
+        public IActionResult HomePage()
+        {
+            return View();
+        }
 
-		public IActionResult About()
-		{
-			ViewData["Message"] = "Your application description page.";
+        public IActionResult About()
+        {
+            ViewData["Message"] = "Your application description page.";
 
-			return View();
-		}
+            return View();
+        }
 
-		public IActionResult Contact()
-		{
-			ViewData["Message"] = "Your contact page.";
+        public IActionResult Contact()
+        {
+            ViewData["Message"] = "Your contact page.";
 
-			return View();
-		}
+            return View();
+        }
 
-		public IActionResult Privacy()
-		{
-			return View();
-		}
+        public IActionResult Privacy()
+        {
+            return View();
+        }
 
-		[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-		public IActionResult Error()
-		{
-			return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-		}
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Error()
+        {
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
 
-		[HttpGet]
-		public IActionResult EditCustomer(long? id)
-		{
-			Appointments model = new Appointments();
-			if (id.HasValue)
-			{
-				Appointments customer = _db.Set<Appointments>().SingleOrDefault(c => c.Id == id.Value);
-				if (customer != null)
-				{
-					model.Id = customer.Id;
-					model.Name = customer.Name;
-					model.Phone = customer.Phone;
-					model.Email = customer.Email;
-					model.Date = customer.Date;
-				}
-			}
-			return View(model);
-		}
-	}
+        [HttpGet]
+        public IActionResult EditCustomer(long? id)
+        {
+            Appointments model = new Appointments();
+            if (id.HasValue)
+            {
+                Appointments customer = _db.Appointments.FirstOrDefault(c => c.Id == id.Value);
+                if (customer != null)
+                {
+                    model.Id = customer.Id;
+                    model.Name = customer.Name;
+                    model.Phone = customer.Phone;
+                    model.Email = customer.Email;
+                    model.Date = customer.Date;
+                }
+            }
+            return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult EditCustomerSave(Appointments appointment)
+        {
+            Appointments model = new Appointments();
+            if (appointment != null)
+            {
+                Appointments customer = _db.Appointments.FirstOrDefault(c => c.Id == appointment.Id);
+                if (customer != null)
+                {
+                    customer.Name = appointment.Name;
+                    customer.Phone = appointment.Phone;
+                    customer.Email = appointment.Email;
+                    customer.Date = appointment.Date;
+               
+                }
+                _db.Appointments.Update(customer);
+                _db.SaveChanges();
+            }
+            return RedirectToAction("GetData");
+        }
+
+        [Authorize(Roles = "Admin")]
+        public IActionResult Images()
+        {
+            return View();
+        }
+
+        [Authorize(Roles = "Admin")]
+        public IActionResult Videos()
+        {
+            return View();
+        }
+
+
+        [Authorize(Roles = "Admin")]
+        public IActionResult GetCertification()
+        {
+            return View();
+        }
+    }
 }
