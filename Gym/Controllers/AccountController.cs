@@ -37,17 +37,14 @@ namespace Gym.Controllers
 		{
 			if (!string.IsNullOrEmpty(loginModel.UserName) && string.IsNullOrEmpty(loginModel.Password))
 			{
-				return View("Inavalid Username or Password");
-				//return RedirectToAction("Login");
+				ViewBag.LoginErrorMessage = "Inavalid Username or Password";
+				//return View("Inavalid Username or Password");
+				return RedirectToAction("Login");
 			}
 
 			var user = _db.UserModel.FirstOrDefault(x => x.UserName == loginModel.UserName
 											   && x.Password == loginModel.Password);
-
-			if (user == null)
-			{
-				return Content("alert('Inavalid Username or Password')");
-			}
+ 
 			if (user != null)
 			{
 
@@ -70,8 +67,13 @@ namespace Gym.Controllers
 				if (user.UserType == 2 && user.IsActive == true)
 					return RedirectToAction("Video", "Home");
 			}
+			else
+			{
+				ViewBag.LoginErrorMessage = "Inavalid Username or Password";
+			}
 
-			return RedirectToAction("Login");
+			//return RedirectToAction("Login");
+			return RedirectToAction("Index","Home");
 
 		}
 
