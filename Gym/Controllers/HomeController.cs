@@ -27,6 +27,14 @@ namespace Gym.Controllers
 
         [Authorize(Roles = "Admin, User")]
         [HttpGet]
+        public IActionResult DemoImages()
+        {
+            var models = _db.Images.OrderByDescending(x => x.Id).ToList();
+            return View(models);
+        }
+
+        [Authorize(Roles = "Admin, User")]
+        [HttpGet]
         public IActionResult DemoVideo()
         {
             var models = _db.Videos.OrderByDescending(x => x.Id).ToList();
