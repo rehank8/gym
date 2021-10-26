@@ -1,7 +1,7 @@
 ﻿@model Gym.Models.UserModel
 
 <div class="container-fluid">
-	<div class="row">
+	<div class="row" style="padding:20px">
 		<div class="col-md-12">
 			<form method="post" action="~/account/loginsave">
 				<div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -15,7 +15,6 @@
 					<input asp-for="Password" type="password" class="form-control" />
 					<span asp-validation-for="Password" class="text-danger"></span>
 				</div>
-
 				<div class="form-group">
 					<input type="submit" class="btn form-control" value="Login">
 					</input>

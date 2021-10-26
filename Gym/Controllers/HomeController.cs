@@ -11,163 +11,242 @@ using System.IO;
 
 namespace Gym.Controllers
 {
-    public class HomeController : Controller
-    {
-        private readonly gymContext _db;
+	public class HomeController : Controller
+	{
+		private readonly gymContext _db;
 
-        public HomeController(gymContext gymContext)
-        {
-            _db = gymContext;
-        }
+		public HomeController(gymContext gymContext)
+		{
+			_db = gymContext;
+		}
 
-        public IActionResult Index()
-        {
-            return View();
-        }
+		public IActionResult Index()
+		{
+			return View();
+		}
 
-        [Authorize(Roles = "Admin, User")]
-        [HttpGet]
-        public IActionResult DemoVideo()
-        {
-            return View();
-        }
+		[Authorize(Roles = "Admin, User")]
+		[HttpGet]
+		public IActionResult DemoVideo()
+		{
+			return View();
+		}
 
-        //[HttpPost]
-        //public IActionResult Login()
-        //{
-        //	return RedirectToAction(nameof(GetData));
-        //}
+		[Authorize(Roles = "User")]
+		[HttpGet]
+		public IActionResult Video()
+		{
+			return View();
+		}
 
-        [HttpGet]
-        [Authorize(Roles = "Admin")]
-        public IActionResult GetData()
-        {
-            return View(_db.Appointments.ToList());
-        }
+		//[HttpPost]
+		//public IActionResult Login()
+		//{
+		//	return RedirectToAction(nameof(GetData));
+		//}
 
-        [HttpPost]
-        public IActionResult Index(Appointments appointment)
-        {
-            if (ModelState.IsValid)
-            {
-                _db.Appointments.Add(appointment);
-                _db.SaveChanges();
-                ModelState.Clear();
-            }
+		[HttpGet]
+		[Authorize(Roles = "Admin")]
+		public IActionResult GetData()
+		{
+			var u = this.HttpContext.User as System.Security.Claims.ClaimsPrincipal;
+			var isAdmin = u.Claims.Any(c => c.Value == "admin");
+			ViewBag.UserType = isAdmin;
+			return View(_db.Appointments.ToList());
+		}
+		[HttpGet]
+		public IActionResult GetUsers()
+		{
+			var u = this.HttpContext.User as System.Security.Claims.ClaimsPrincipal;
+			var isAdmin = u.Claims.Any(c => c.Value == "admin");
+			ViewBag.UserType = isAdmin;
+			return View(_db.UserModel.ToList());
+		}
 
-            return View();
-        }
+		[HttpPost]
+		public IActionResult Index(Appointments appointment)
+		{
+			if (ModelState.IsValid)
+			{
+				_db.Appointments.Add(appointment);
+				_db.SaveChanges();
+				ModelState.Clear();
+			}
 
-        public IActionResult HomePage()
-        {
-            return View();
-        }
+			return View();
+		}
 
-        public IActionResult About()
-        {
-            ViewData["Message"] = "Your application description page.";
+		[HttpGet]
+		public IActionResult EditUser(long? id)
+		{
+			UserModel model = new UserModel();
+			if (id.HasValue)
+			{
+				UserModel user = _db.UserModel.FirstOrDefault(c => c.Id == id.Value);
+				if (user != null)
+				{
+					model.Id = user.Id;
+					model.UserName = user.UserName;
+					model.Password = user.Password;
+					model.UserType = user.UserType;
+					model.IsActive = user.IsActive;
+				}
+			}
+			return View(model);
+		}
 
-            return View();
-        }
+		public IActionResult Create()
+		{
+			
+			var user = new UserModel();
+			user.UserType = 2;
+			return View(user);
+		}
 
-        public IActionResult Contact()
-        {
-            ViewData["Message"] = "Your contact page.";
+		[HttpPost]
+		public IActionResult CreateUser(UserModel user)
+		{
+			if (ModelState.IsValid)
+			{
+				_db.UserModel.Add(user);
+				_db.SaveChanges();
+				ModelState.Clear();
+			}
+			return RedirectToAction("GetUsers");
+		}
 
-            return View();
-        }
+		public IActionResult HomePage()
+		{
+			return View();
+		}
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
+		public IActionResult About()
+		{
+			ViewData["Message"] = "Your application description page.";
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
+			return View();
+		}
 
-        [HttpGet]
-        public IActionResult EditCustomer(long? id)
-        {
-            Appointments model = new Appointments();
-            if (id.HasValue)
-            {
-                Appointments customer = _db.Appointments.FirstOrDefault(c => c.Id == id.Value);
-                if (customer != null)
-                {
-                    model.Id = customer.Id;
-                    model.Name = customer.Name;
-                    model.Phone = customer.Phone;
-                    model.Email = customer.Email;
-                    model.Date = customer.Date;
-                }
-            }
-            return View(model);
-        }
+		public IActionResult Contact()
+		{
+			ViewData["Message"] = "Your contact page.";
 
-        [HttpPost]
-        public IActionResult EditCustomerSave(Appointments appointment)
-        {
-            Appointments model = new Appointments();
-            if (appointment != null)
-            {
-                Appointments customer = _db.Appointments.FirstOrDefault(c => c.Id == appointment.Id);
-                if (customer != null)
-                {
-                    customer.Name = appointment.Name;
-                    customer.Phone = appointment.Phone;
-                    customer.Email = appointment.Email;
-                    customer.Date = appointment.Date;
+			return View();
+		}
 
-                }
-                _db.Appointments.Update(customer);
-                _db.SaveChanges();
-            }
-            return RedirectToAction("GetData");
-        }
+		public IActionResult Privacy()
+		{
+			return View();
+		}
 
-        [Authorize(Roles = "Admin")]
-        public IActionResult Images()
-        {
-            return View();
-        }
+		[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+		public IActionResult Error()
+		{
+			return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+		}
 
-        [Authorize(Roles = "Admin")]
-        public IActionResult Videos()
-        {
-            return View();
-        }
+		[HttpGet]
+		public IActionResult EditCustomer(long? id)
+		{
+			Appointments model = new Appointments();
+			if (id.HasValue)
+			{
+				Appointments customer = _db.Appointments.FirstOrDefault(c => c.Id == id.Value);
+				if (customer != null)
+				{
+					model.Id = customer.Id;
+					model.Name = customer.Name;
+					model.Phone = customer.Phone;
+					model.Email = customer.Email;
+					model.Date = customer.Date;
+				}
+			}
+			return View(model);
+		}
 
-        [HttpPost]
-        [Authorize(Roles = "Admin")]
-        public ActionResult FileUpload(IFormFile fileupload)
-        {
-            if (fileupload != null)
-            {
-                if (fileupload == null || fileupload.Length == 0)
-                    return Content("file not selected");
+		[HttpPost]
+		public IActionResult EditCustomerSave(Appointments appointment)
+		{
+			Appointments model = new Appointments();
+			if (appointment != null)
+			{
+				Appointments customer = _db.Appointments.FirstOrDefault(c => c.Id == appointment.Id);
+				if (customer != null)
+				{
+					customer.Name = appointment.Name;
+					customer.Phone = appointment.Phone;
+					customer.Email = appointment.Email;
+					customer.Date = appointment.Date;
 
-                var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "admin");
-                if (!Directory.Exists(path))
-                {
-                    Directory.CreateDirectory(path);
-                }
-                path = path + "\\" + fileupload.FileName;
-                using (var stream = new FileStream(path, FileMode.Create))
-                {
-                    fileupload.CopyTo(stream);
-                }
-            }
+				}
+				_db.Appointments.Update(customer);
+				_db.SaveChanges();
+			}
+			return RedirectToAction("GetData");
+		}
 
-            return RedirectToAction("Videos");
-        }
 
-        [Authorize(Roles = "Admin")]
-        public IActionResult GetCertification()
-        {
-            return View();
-        }
-    }
+		[HttpPost]
+		public IActionResult EditUserSave(UserModel user)
+		{
+			if (user != null)
+			{
+				UserModel userModel = _db.UserModel.FirstOrDefault(c => c.Id == user.Id);
+				if (userModel != null)
+				{
+					userModel.UserType = user.UserType;
+					userModel.UserName = user.UserName;
+					userModel.Password = user.Password;
+					userModel.IsActive = user.IsActive;
+
+				}
+				_db.UserModel.Update(userModel);
+				_db.SaveChanges();
+			}
+			return RedirectToAction("GetUsers");
+		}
+
+
+		[Authorize(Roles = "Admin")]
+		public IActionResult Images()
+		{
+			return View();
+		}
+
+		[Authorize(Roles = "Admin")]
+		public IActionResult Videos()
+		{
+			return View();
+		}
+
+		[HttpPost]
+		[Authorize(Roles = "Admin")]
+		public ActionResult FileUpload(IFormFile fileupload)
+		{
+			if (fileupload != null)
+			{
+				if (fileupload == null || fileupload.Length == 0)
+					return Content("file not selected");
+
+				var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "admin");
+				if (!Directory.Exists(path))
+				{
+					Directory.CreateDirectory(path);
+				}
+				path = path + "\\" + fileupload.FileName;
+				using (var stream = new FileStream(path, FileMode.Create))
+				{
+					fileupload.CopyTo(stream);
+				}
+			}
+
+			return RedirectToAction("Videos");
+		}
+
+		[Authorize(Roles = "Admin")]
+		public IActionResult GetCertification()
+		{
+			return View();
+		}
+	}
 }
