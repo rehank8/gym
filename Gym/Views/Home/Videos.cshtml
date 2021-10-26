@@ -1,4 +1,5 @@
-﻿@{
+﻿@model List<Videos>
+@{
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 <h2> Upload Videos </h2>
@@ -6,8 +7,14 @@
 <form method="post" enctype="multipart/form-data" asp-controller="Home" asp-action="VideoUpload">
     <div class="form-group">
         <div class="col-md-10">
+            <p>Description</p>
+            <input type="text" name="txtDescription" id="txtDescription" value="" />
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-10">
             <p>Upload video using this form:</p>
-            <input type="file" name="fileupload" id="fileupload" accept="video/*" />
+            <input type="file" name="fileupload" id="fileupload" accept="video/mp4" />
         </div>
     </div>
     <br />
@@ -18,3 +25,22 @@
         </div>
     </div>
 </form>
+
+<div style="width:100%;float:left">
+    @foreach (var item in Model)
+    {
+
+    <div style="width:400px;float:left;margin:10px;">
+        <video width="370" height="255" poster="placeholder.png" controls>
+            <source src="~/admin/videos/@item.videopath" type="video/mp4">
+        </video>
+        <div style="padding:10px 5px;">
+            <span>
+                @item.videodescription
+                <input type="hidden" id="hdnImageId" name="hdnImageId" value="@item.Id" />
+            </span>
+        </div>
+    </div>
+
+    }
+</div>

@@ -139,7 +139,8 @@ namespace Gym.Controllers
         [Authorize(Roles = "Admin")]
         public IActionResult Videos()
         {
-            return View();
+            var models = _db.Videos.OrderByDescending(x => x.Id).ToList();
+            return View(models);
         }
 
         [HttpPost]
@@ -177,7 +178,7 @@ namespace Gym.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        public ActionResult VideoUpload(IFormFile fileupload)
+        public ActionResult VideoUpload(IFormCollection frmCollection, IFormFile fileupload)
         {
             if (fileupload != null)
             {
@@ -194,6 +195,15 @@ namespace Gym.Controllers
                 {
                     fileupload.CopyTo(stream);
                 }
+
+                Videos video = new Videos()
+                {
+                    videodescription = Convert.ToString(frmCollection["txtDescription"]),
+                    videopath = fileupload.FileName
+                };
+
+                _db.Videos.Add(video);
+                _db.SaveChanges();
             }
 
             return RedirectToAction("Videos");
