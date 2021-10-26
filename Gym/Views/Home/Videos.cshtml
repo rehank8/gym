@@ -35,10 +35,15 @@
             <source src="~/admin/videos/@item.videopath" type="video/mp4">
         </video>
         <div style="padding:10px 5px;">
-            <span>
-                @item.videodescription
-                <input type="hidden" id="hdnImageId" name="hdnImageId" value="@item.Id" />
-            </span>
+            <form method="post" asp-controller="Home" asp-action="DeleteVideo">
+                <span>
+                    @item.videodescription
+                    <input type="hidden" id="hdnImageId" name="hdnVideoId" value="@item.Id" />
+                </span>
+                <span>
+                    <input type="submit" class="btn-danger btn-sm btnDelete" id="btnDelete_@item.Id" value="Delete" />
+                </span>
+            </form>
         </div>
     </div>
 

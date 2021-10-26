@@ -34,10 +34,15 @@
             <img src="~/admin/images/@item.imagepath" class="img-rounded" alt="Cinque Terre"
                  width="250" height="200">
             <div style="padding:10px 5px;">
-                <span>
-                    @item.imagedescription
-                    <input type="hidden" id="hdnImageId" name="hdnImageId" value="@item.Id" />
-                </span>
+                <form method="post" asp-controller="Home" asp-action="DeleteImage">
+                    <span>
+                        @item.imagedescription
+                        <input type="hidden" id="hdnImageId" name="hdnImageId" value="@item.Id" />
+                    </span>
+                    <span>
+                        <input type="submit" class="btn-danger btn-sm btnDelete" id="btnDelete_@item.Id" value="Delete" />
+                    </span>
+                </form>
             </div>
         </div>
 

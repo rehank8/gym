@@ -146,6 +146,32 @@ namespace Gym.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
+        public ActionResult DeleteImage(IFormCollection frmCollection)
+        {
+
+            var imageId = int.Parse(frmCollection["hdnImageId"]);
+            var image = _db.Images.FirstOrDefault(x => x.Id == imageId);
+            _db.Images.Remove(image);
+            _db.SaveChanges();
+
+            return RedirectToAction("Images");
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        public ActionResult DeleteVideo(IFormCollection frmCollection)
+        {
+
+            var id = int.Parse(frmCollection["hdnVideoId"]);
+            var video = _db.Videos.FirstOrDefault(x => x.Id == id);
+            _db.Videos.Remove(video);
+            _db.SaveChanges();
+
+            return RedirectToAction("Videos");
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
         public ActionResult ImageUpload(IFormCollection frmCollection, IFormFile fileupload)
         {
             if (fileupload != null)
