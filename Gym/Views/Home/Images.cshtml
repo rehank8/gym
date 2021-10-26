@@ -1,20 +1,45 @@
-﻿@{
+﻿@model List<Images>
+@{
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 <h2> Upload Images </h2>
 
-<form method="post" enctype="multipart/form-data" asp-controller="Home" asp-action="FileUpload">
+
+<form method="post" enctype="multipart/form-data" asp-controller="Home" asp-action="ImageUpload">
+    <div class="form-group">
+        <div class="col-md-10">
+            <p>Description</p>
+            <input type="text" name="txtDescription" id="txtDescription" value="" />
+        </div>
+    </div>
     <div class="form-group">
         <div class="col-md-10">
             <p>Upload Image using this form:</p>
             <input type="file" name="fileupload" id="fileupload" accept="image/x-png,image/gif,image/jpeg" />
         </div>
     </div>
-    <br />
-    <br />
     <div class="form-group">
         <div class="col-md-10">
             <input type="submit" value="Upload" />
         </div>
     </div>
 </form>
+<div style="width:100%;height:25px;float:left">
+</div>
+<div style="width:100%;float:left">
+    @foreach (var item in Model)
+    {
+
+        <div style="width:300px;float:left;margin:10px;">
+            <img src="~/admin/images/@item.imagepath" class="img-rounded" alt="Cinque Terre"
+                 width="250" height="200">
+            <div style="padding:10px 5px;">
+                <span>
+                    @item.imagedescription
+                    <input type="hidden" id="hdnImageId" name="hdnImageId" value="@item.Id" />
+                </span>
+            </div>
+        </div>
+
+    }
+</div>

@@ -131,7 +131,9 @@ namespace Gym.Controllers
         [Authorize(Roles = "Admin")]
         public IActionResult Images()
         {
-            return View();
+            var imageModels = _db.Images.OrderByDescending(x => x.Id).ToList();
+
+            return View(imageModels);
         }
 
         [Authorize(Roles = "Admin")]
@@ -142,14 +144,47 @@ namespace Gym.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        public ActionResult FileUpload(IFormFile fileupload)
+        public ActionResult ImageUpload(IFormCollection frmCollection, IFormFile fileupload)
         {
             if (fileupload != null)
             {
                 if (fileupload == null || fileupload.Length == 0)
                     return Content("file not selected");
 
-                var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "admin");
+                var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "admin", "images");
+                if (!Directory.Exists(path))
+                {
+                    Directory.CreateDirectory(path);
+                }
+                path = path + "\\" + fileupload.FileName;
+                using (var stream = new FileStream(path, FileMode.Create))
+                {
+                    fileupload.CopyTo(stream);
+                }
+
+                Images image = new Images()
+                {
+                    imagedescription = Convert.ToString(frmCollection["txtDescription"]),
+                    imagepath = fileupload.FileName
+                };
+
+                _db.Images.Add(image);
+                _db.SaveChanges();
+            }
+
+            return RedirectToAction("Images");
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        public ActionResult VideoUpload(IFormFile fileupload)
+        {
+            if (fileupload != null)
+            {
+                if (fileupload == null || fileupload.Length == 0)
+                    return Content("file not selected");
+
+                var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "admin", "videos");
                 if (!Directory.Exists(path))
                 {
                     Directory.CreateDirectory(path);
