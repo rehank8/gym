@@ -18,6 +18,8 @@ namespace Gym.Models
         public virtual DbSet<Appointments> Appointments { get; set; }
         public virtual DbSet<Certifications> Certifications { get; set; }
         public virtual DbSet<UserModel> UserModel { get; set; }
+        public virtual DbSet<Images> Images { get; set; }
+        public virtual DbSet<Videos> Videos { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -87,6 +89,35 @@ namespace Gym.Models
                     .IsRequired()
                     .HasMaxLength(50)
                     .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<Images>(entity =>
+            {
+                // entity.HasKey(e => e.Id).HasName("Id");
+                entity.Property(e => e.Id).HasColumnName("Id");
+
+                entity.Property(e => e.imagepath)
+                .HasColumnName("imagepath")
+                    .HasMaxLength(512);
+
+                entity.Property(e => e.imagedescription)
+                    .HasColumnName("imagedescription")
+                    .HasMaxLength(1024);
+
+            });
+
+            modelBuilder.Entity<Videos>(entity =>
+            {
+                //entity.HasKey(e => e.Id).HasName("Id");
+                entity.Property(e => e.Id).HasColumnName("Id");
+
+                entity.Property(e => e.videopath)
+                .HasColumnName("videopath")
+                    .HasMaxLength(512);
+
+                entity.Property(e => e.videodescription)
+                   .HasColumnName("videodescription")
+                   .HasMaxLength(1024);
             });
         }
     }
