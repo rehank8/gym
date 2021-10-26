@@ -25,12 +25,13 @@ namespace Gym.Controllers
 			return View();
 		}
 
-		[Authorize(Roles = "Admin, User")]
-		[HttpGet]
-		public IActionResult DemoVideo()
-		{
-			return View();
-		}
+        [Authorize(Roles = "Admin, User")]
+        [HttpGet]
+        public IActionResult DemoVideo()
+        {
+            var models = _db.Videos.OrderByDescending(x => x.Id).ToList();
+            return View(models);
+        }
 
 		[Authorize(Roles = "User")]
 		[HttpGet]
@@ -215,11 +216,38 @@ namespace Gym.Controllers
 			return View(imageModels);
 		}
 
-		[Authorize(Roles = "Admin")]
-		public IActionResult Videos()
-		{
-			return View();
-		}
+        [Authorize(Roles = "Admin")]
+        public IActionResult Videos()
+        {
+            var models = _db.Videos.OrderByDescending(x => x.Id).ToList();
+            return View(models);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        public ActionResult DeleteImage(IFormCollection frmCollection)
+        {
+
+            var imageId = int.Parse(frmCollection["hdnImageId"]);
+            var image = _db.Images.FirstOrDefault(x => x.Id == imageId);
+            _db.Images.Remove(image);
+            _db.SaveChanges();
+
+            return RedirectToAction("Images");
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        public ActionResult DeleteVideo(IFormCollection frmCollection)
+        {
+
+            var id = int.Parse(frmCollection["hdnVideoId"]);
+            var video = _db.Videos.FirstOrDefault(x => x.Id == id);
+            _db.Videos.Remove(video);
+            _db.SaveChanges();
+
+            return RedirectToAction("Videos");
+        }
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
@@ -256,7 +284,7 @@ namespace Gym.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        public ActionResult VideoUpload(IFormFile fileupload)
+        public ActionResult VideoUpload(IFormCollection frmCollection, IFormFile fileupload)
         {
             if (fileupload != null)
             {
@@ -273,6 +301,15 @@ namespace Gym.Controllers
                 {
                     fileupload.CopyTo(stream);
                 }
+
+                Videos video = new Videos()
+                {
+                    videodescription = Convert.ToString(frmCollection["txtDescription"]),
+                    videopath = fileupload.FileName
+                };
+
+                _db.Videos.Add(video);
+                _db.SaveChanges();
             }
 
 			return RedirectToAction("Videos");
