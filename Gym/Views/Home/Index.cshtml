@@ -37,25 +37,34 @@
 						<a class="navbar-brand" href="index.html"><i class="icon-info-blocks material-icons">location_on</i>Shape</a>
 					</div>
 					<div class="navbar-collapse collapse ">
-                        <ul class="nav navbar-nav">
-                            <li class="active"><a class="waves-effect waves-dark" href="index.html">Home</a></li>
-                            <li class="dropdown">
-                                <a href="#" data-toggle="dropdown" class="dropdown-toggle waves-effect waves-dark">About Us <b class="caret"></b></a>
-                                <ul class="dropdown-menu">
-                                    <li><a class="waves-effect waves-dark" href="about.html">Company</a></li>
-                                    <li><a class="waves-effect waves-dark" href="#">Our Team</a></li>
-                                    <li><a class="waves-effect waves-dark" href="#">News</a></li>
-                                    <li><a class="waves-effect waves-dark" href="#">Investors</a></li>
-                                </ul>
-                            </li>
-                            <li><a class="waves-effect waves-dark" href="services.html">Services</a></li>
-                            <li><a class="waves-effect waves-dark" href="~/home/demovideo">Videos</a></li>
-                            <li><a class="waves-effect waves-dark" href="~/home/demoimages">Gallery</a></li>
-                            <li><a class="waves-effect waves-dark" href="pricing.html">Pricing</a></li>
-                            <li><a class="waves-effect waves-dark" href="contact.html">Contact</a></li>
-                            <li><a class="waves-effect waves-dark loginmodel" href="javascript:void(0)">Login</a></li>
-                            @*<li><a class="waves-effect waves-dark" href="#">Appointment</a></li>*@
-                        </ul>
+						<ul class="nav navbar-nav">
+							<li class="active"><a class="waves-effect waves-dark" href="index.html">Home</a></li>
+							<li class="dropdown">
+								<a href="#" data-toggle="dropdown" class="dropdown-toggle waves-effect waves-dark">About Us <b class="caret"></b></a>
+								<ul class="dropdown-menu">
+									<li><a class="waves-effect waves-dark" href="about.html">Company</a></li>
+									<li><a class="waves-effect waves-dark" href="#">Our Team</a></li>
+									<li><a class="waves-effect waves-dark" href="#">News</a></li>
+									<li><a class="waves-effect waves-dark" href="#">Investors</a></li>
+								</ul>
+							</li>
+							<li><a class="waves-effect waves-dark" href="services.html">Services</a></li>
+							<li><a class="waves-effect waves-dark" href="~/home/demovideo">Videos</a></li>
+							<li><a class="waves-effect waves-dark" href="~/home/demoimages">Gallery</a></li>
+							<li><a class="waves-effect waves-dark" href="pricing.html">Pricing</a></li>
+							<li><a class="waves-effect waves-dark" href="contact.html">Contact</a></li>
+							<li>
+								@if (string.IsNullOrEmpty(Context.Request.Cookies["LoginCookie"]))
+								{
+									<a class="waves-effect waves-dark loginmodel" href="javascript:void(0)">Login</a>
+								}
+								else
+								{
+									<a class="waves-effect waves-dark loginmodel" asp-controller="Account" asp-action="Logout">Logout</a>
+								}
+							</li>
+							@*<li><a class="waves-effect waves-dark" href="#">Appointment</a></li>*@
+						</ul>
 					</div>
 				</div>
 			</div>
@@ -283,36 +292,39 @@
 			</div>
 		</section>
 
-		<div class="modal" id="loginModal">
-			<div class="modal-dialog">
-				
-				<div class="modal-content">
-					<div class="modal-header">
-						<button class="close" type="button" data-dismiss="modal">&times;</button>
+		<div class="modal" id="loginModal" style="height:300px;width:540px;hidden;overflow-x:hidden">
+			<div class="modal-header">
+
+				<button class="close" type="button" data-dismiss="modal" style="float">&times;</button>
+			</div>
+			@Html.Partial("~/Views/Shared/_Login.cshtml")
+			@*<div class="modal-content">
+				</div>*@
+
+			@*<form asp-action="Login" method="post">
+					<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+
+					<div class="form-group">
+						<label  class="control-label"></label>
+						<input  class="form-control" />
+						<span  class="text-danger"></span>
 					</div>
-					@Html.Partial("~/Views/Shared/_Login.cshtml");
-					@*<form asp-action="Login" method="post">
-			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+					<div class="form-group">
+						<label asp-for="Password" class="control-label"></label>
+						<input asp-for="Password" class="form-control" />
+						<span asp-validation-for="Password" class="text-danger"></span>
+					</div>
+
+					<div class="form-group">
+						<input type="submit" value="Create" class="btn btn-default" />
+					</div>
+				</form>*@
+			@*<div class="modal-dialog">
 
 
-			<div class="form-group">
-				<label  class="control-label"></label>
-				<input  class="form-control" />
-				<span  class="text-danger"></span>
-			</div>
-
-			<div class="form-group">
-				<label asp-for="Password" class="control-label"></label>
-				<input asp-for="Password" class="form-control" />
-				<span asp-validation-for="Password" class="text-danger"></span>
-			</div>
-
-			<div class="form-group">
-				<input type="submit" value="Create" class="btn btn-default" />
-			</div>
-		</form>*@
-				</div>
-			</div>
+				</div>*@
 		</div>
 		<footer>
 			<div class="container">

@@ -1,0 +1,155 @@
+﻿@*<!DOCTYPE html>
+	<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>@ViewData["Title"] - Gym</title>
+		<link href="~/css/style.css" rel="stylesheet" />
+		<environment include="Development">
+			<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.cssy" />
+			<link rel="stylesheet" href="~/css/site.css" />
+		</environment>
+		<environment exclude="Development">
+			<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+				  asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
+				  asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
+			<link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
+		</environment>
+	</head>
+	<body>
+
+
+		<partial name="_CookieConsentPartial" />*@
+<link href="~/css/bootstrap.min.css" rel="stylesheet" />
+<style>
+	body {
+		font-family: "Lato", sans-serif;
+	}
+
+	.sidenav {
+		height: 100%;
+		width: 200px;
+		position: fixed;
+		z-index: 1;
+		top: 0;
+		left: 0;
+		background-color: #f1f1f1;
+		overflow-x: hidden;
+		padding-top: 20px;
+	}
+
+		.sidenav a {
+			padding: 6px 6px 6px 32px;
+			text-decoration: none;
+			font-size: 25px;
+			color: #818181;
+			display: block;
+		}
+
+			.sidenav a:hover {
+				color: #111;
+			}
+
+	.main {
+		margin-left: 200px; /* Same as the width of the sidenav */
+	}
+
+	@@media screen and (max-height: 450px) {
+		.sidenav {
+			padding-top: 15px;
+		}
+
+			.sidenav a {
+				font-size: 18px;
+			}
+	}
+</style>
+<div class="row">
+	<div class="col-md-2">
+		
+		<div id="mySidenav" class="sidenav">
+			
+			@*<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>*@
+			<a href="~/Home/GetUsers">User Profile</a>
+			<a href="~/Home/Videos">Videos</a>
+			<a href="~/Home/GetUsers">Payment</a>
+		</div>
+	</div>
+
+	<div class="col-md-10">
+		@RenderBody()
+	</div>
+</div>
+@*<div class="container body-content">
+		<hr />
+		<footer>
+			<p>&copy; 2021 - Gym</p>
+		</footer>
+	</div>*@
+@RenderSection("Scripts", required: false)
+<script type="text/javascript">
+
+    function openNav() {
+        document.getElementById("mySidenav").style.width = "250px";
+    }
+
+    /* Set the width of the side navigation to 0 */
+    function closeNav() {
+        document.getElementById("mySidenav").style.width = "0";
+    }
+
+    function openNav() {
+  document.getElementById("mySidenav").style.width = "250px";
+  document.getElementById("main").style.marginLeft = "250px";
+  document.body.style.backgroundColor = "rgba(0,0,0,0.4)";
+}
+
+/* Set the width of the side navigation to 0 and the left margin of the page content to 0, and the background color of body to white */
+function closeNav() {
+  document.getElementById("mySidenav").style.width = "0";
+  document.getElementById("main").style.marginLeft = "0";
+  document.body.style.backgroundColor = "white";
+    }
+
+    function openNav() {
+        document.getElementById("mySidenav").style.width = "100%";
+    }
+
+    /* Close/hide the sidenav */
+    function closeNav() {
+        document.getElementById("mySidenav").style.width = "0";
+    }
+
+    function openNav() {
+        document.getElementById("mySidenav").style.display = "block";
+    }
+
+    /* Close/hide the sidenav */
+    function closeNav() {
+        document.getElementById("mySidenav").style.display = "none";
+    }
+</script>
+@*<environment include="Development">
+			<script src="~/lib/jquery/dist/jquery.js"></script>
+			<script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+			<script src="~/js/site.js" asp-append-version="true"></script>
+		</environment>
+		<environment exclude="Development">
+			<script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.3.1.min.js"
+					asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+					asp-fallback-test="window.jQuery"
+					crossorigin="anonymous"
+					integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT">
+			</script>
+			<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"
+					asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
+					asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
+					crossorigin="anonymous"
+					integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd">
+			</script>
+			<script src="~/js/site.min.js" asp-append-version="true"></script>
+		</environment>
+
+		@RenderSection("Scripts", required: false)
+	</body>
+	</html>*@
