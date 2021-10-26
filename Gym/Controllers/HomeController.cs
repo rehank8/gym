@@ -29,7 +29,8 @@ namespace Gym.Controllers
         [HttpGet]
         public IActionResult DemoVideo()
         {
-            return View();
+            var models = _db.Videos.OrderByDescending(x => x.Id).ToList();
+            return View(models);
         }
 
         //[HttpPost]
