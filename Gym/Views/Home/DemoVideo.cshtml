@@ -1,22 +1,22 @@
 ﻿@model List<Videos>
+@{
+    Layout = "~/Views/Shared/_GuestLayout.cshtml";
+}
 
-<h2>Demo Videos</h2>
+<h4>Demo Videos</h4>
 
-<div style="width:100%;float:left">
-    @foreach (var item in Model)
-    {
-
-        <div style="width:400px;float:left;margin:10px;">
-            <video width="370" height="255" poster="placeholder.png" controls>
-                <source src="~/admin/videos/@item.videopath" type="video/mp4">
-            </video>
-            <div style="padding:10px 5px;">
-                <span>
-                    @item.videodescription
-                    <input type="hidden" id="hdnImageId" name="hdnImageId" value="@item.Id" />
-                </span>
-            </div>
+@foreach (var item in Model)
+{
+    <div style="width:350px;float:left;margin:10px;">
+        <video width="320" height="220" poster="~/admin/videos/@item.videopath" controls>
+            <source  src="~/admin/videos/@item.videopath#t=0.5" type="video/mp4">
+        </video>
+        <div style="padding:10px 5px;">
+            <span>
+                @item.videodescription
+                <input type="hidden" id="hdnImageId" name="hdnImageId" value="@item.Id" />
+            </span>
         </div>
+    </div>
 
-    }
-</div>
+}

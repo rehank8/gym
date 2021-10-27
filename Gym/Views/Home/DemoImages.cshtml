@@ -1,19 +1,19 @@
 ﻿@model List<Images>
+@{
+    Layout = "~/Views/Shared/_GuestLayout.cshtml";
+}
+<h4>Demo Images</h4>
 
-<h2>Demo Images</h2>
-
-<div style="width:100%;float:left">
-    @foreach (var item in Model)
-    {
-        <div style="width:300px;float:left;margin:10px;">
-            <img src="~/admin/images/@item.imagepath" class="img-rounded" alt="Cinque Terre"
-                 width="250" height="200">
-            <div style="padding:10px 5px;">
-                <span>
-                    @item.imagedescription
-                    <input type="hidden" id="hdnImageId" name="hdnImageId" value="@item.Id" />
-                </span>
-            </div>
+@foreach (var item in Model)
+{
+    <div style="width:300px;float:left;margin:10px;">
+        <img src="~/admin/images/@item.imagepath" class="img-rounded" alt="Cinque Terre"
+             width="250" height="200">
+        <div style="padding:10px 5px;">
+            <span>
+                @item.imagedescription
+                <input type="hidden" id="hdnImageId" name="hdnImageId" value="@item.Id" />
+            </span>
         </div>
-    }
-</div>
+    </div>
+}
