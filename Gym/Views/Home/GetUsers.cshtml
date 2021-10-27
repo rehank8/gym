@@ -7,12 +7,12 @@
 <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css" />
 
 
-<h2>GetUsers</h2>
+<h2></h2>
 
 <p>
 	<a asp-action="Create">Create New</a>
 </p>
-<table class="table">
+<table class="display table" id="user">
 	<thead>
 		<tr>
 			<th>
@@ -49,7 +49,7 @@
 				<td>
 					<a href="javascript:void(0)" class="editmodal" onclick="edit(@item.Id)">Edit</a> |
 
-					<a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+				
 					<a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
 				</td>
 			</tr>
@@ -109,5 +109,11 @@
 	$('button.close').click(function () {
 		$('.editmodalpopup').css("display", "none");
 		$('.createmodalpopup').css("display", "none");
+	});
+</script>
+
+<script type="text/javascript">
+	$(document).ready(function () {
+		$('#user').DataTable();
 	});
 </script>

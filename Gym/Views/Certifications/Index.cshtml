@@ -1,54 +1,94 @@
 ﻿@model IEnumerable<Gym.Models.Certifications>
 
 @{
-    ViewData["Title"] = "Index";
-    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+	ViewData["Title"] = "Index";
+	Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
-
-<h2>Index</h2>
+<link href="~/css/bootstrap.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css" />
+<h2></h2>
 
 <p>
-    <a asp-action="Create">Create New</a>
+	<a asp-action="Create">Create New</a>
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Username)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Location)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Type)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Username)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Location)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Type)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
+<table class="display table" id="cert">
+	<thead>
+		<tr>
+			<th></th>
+			<th>
+				@Html.DisplayNameFor(model => model.Username)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.Location)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.Type)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.Description)
+			</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var item in Model)
+		{
+			<tr>
+				<td>
+					<input type="checkbox" name="@item.Id" id="@item.Id" onclick="showprint(@item.Id)" />
+					@*@Html.CheckBoxFor()*@
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Username)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Location)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Type)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Description)
+				</td>
+				<td>
+					<a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+					|
+					<a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+				</td>
+			</tr>
+		}
+	</tbody>
 </table>
+
+<button class="btn btn-primary" id="print" style="float:right;margin:10px">Print</button>
+
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+@*<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>*@
+<script src="js/bootstrap.min.js"></script>
+<script type="text/javascript">
+
+	$(document).ready(function () {
+		debugger;
+		$('#cert').DataTable();
+		document.getElementById('print').style.display = "none";
+	});
+	var id = 0;
+	function showprint(e) {
+		debugger;
+		var s =@Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.CertificationsList));
+		$.each(s, function (index, value) {
+			if (value.Id == e) {
+				document.getElementById(value.Id).checked = true;
+			}
+			else {
+				document.getElementById(value.Id).checked = false;
+			}
+		
+		});
+
+		document.getElementById('print').style.display = "block";
+
+
+	}
+</script>

@@ -57,10 +57,9 @@ namespace Gym.Controllers
 
 				var principal = new ClaimsPrincipal(identity);
 
-				var login = HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+				HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
 				CookieOptions options = new CookieOptions();
 				options.Expires = DateTimeOffset.MaxValue;
-				Response.Cookies.Append("LoginCookie", user.UserName);
 
 				if (user.UserType == 1)
 					return RedirectToAction("GetData", "Home");

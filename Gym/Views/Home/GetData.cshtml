@@ -8,8 +8,8 @@
 }
 <link href="~/css/bootstrap.min.css" rel="stylesheet" />
 <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css" />
-<h2>Get Data</h2>
-<h3> User: <b>Admin</b></h3>
+
+<h3>  <b></b></h3>
 <p>
 	@{
 		@* <a href="javascript:void(0)" class="createmodal" onclick="create()">Create New</a>*@
@@ -20,7 +20,7 @@
 			@Html.ActionLink("Create New", "Create", "Home", new { @class = "createmodal" })
 		}*@
 	}
-	<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button>
+	@*<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button>*@
 </p>
 <table class="display table" id="example">
 	<thead>
@@ -59,7 +59,7 @@
 				<td>
 					@*<a asp-action="Edit" asp-route-id="@item.Id" class="editmodal">Edit</a>*@ |
 					<a href="javascript:void(0)" class="editmodal" onclick="edit(@item.Id)">Edit</a> |
-					<a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+					
 					<a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
 				</td>
 			</tr>
@@ -188,23 +188,7 @@
 	});
 
 
-	//function create() {
-	//	debugger;
-	//	$.ajax({
-	//		type: "GET",
-	//		url: '/Home/Create',
-	//		contentType: "application/json; charset=utf-8",
-	//		datatype: "json",
-	//		success: function (data) {
-	//			$('.createmodalpopup').find('#CreateDialog').html(data);
-	//			//$('.createmodalpopup').css("display", "block");
-	//		},
-	//		error: function () {
-	//			alert("Content load failed.");
-	//		}
-	//	});
-
-	//}
+	
 
 	$('button.close').click(function () {
 		$('.editmodalpopup').css("display", "none");

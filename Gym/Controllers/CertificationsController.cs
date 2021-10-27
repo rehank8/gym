@@ -20,7 +20,9 @@ namespace Gym.Controllers
 		// GET: Certifications
 		public ActionResult Index()
 		{
-			return View(_db.Certifications.ToList());
+			var data = _db.Certifications.ToList();
+			ViewBag.CertificationsList = data;
+			return View(data);
 		}
 
 		// GET: Certifications/Details/5
