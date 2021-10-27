@@ -12,74 +12,77 @@ using Microsoft.AspNetCore.Authentication;
 
 namespace Gym.Controllers
 {
-	public class AccountController : Controller
-	{
-		private readonly gymContext _db;
-		public AccountController(gymContext gymContext)
-		{
-			_db = gymContext;
-		}
-		[HttpGet]
-		public IActionResult Login()
-		{
-			return View("_Login");
-		}
+    public class AccountController : Controller
+    {
+        private readonly gymContext _db;
+        public AccountController(gymContext gymContext)
+        {
+            _db = gymContext;
+        }
+        [HttpGet]
+        public async Task<IActionResult> Login()
+        {
+            return View(new LoginModel());
+        }
 
-		[HttpGet]
-		public IActionResult AccessDenied(string returnUrl)
-		{
-			ViewBag.ReturnURL = returnUrl;
-			return View();
-		}
+        [HttpGet]
+        public IActionResult AccessDenied(string returnUrl)
+        {
+            ViewBag.ReturnURL = returnUrl;
+            return View();
+        }
 
-		[HttpPost]
-		public IActionResult LoginSave(UserModel loginModel)
-		{
-			if (!string.IsNullOrEmpty(loginModel.UserName) && string.IsNullOrEmpty(loginModel.Password))
-			{
-				ViewBag.LoginErrorMessage = "Inavalid Username or Password";
-				//return View("Inavalid Username or Password");
-				return RedirectToAction("Login");
-			}
+        [HttpPost]
+        public async Task<IActionResult> Login(LoginModel loginModel, string returnUrl = "")
+        {
+            if (ModelState.IsValid)
+            {
+                var user = _db.UserModel.FirstOrDefault(x => x.UserName == loginModel.UserName
+                                                   && x.Password == loginModel.Password);
 
-			var user = _db.UserModel.FirstOrDefault(x => x.UserName == loginModel.UserName
-											   && x.Password == loginModel.Password);
- 
-			if (user != null)
-			{
+                if (user != null)
+                {
 
-				var identity = new ClaimsIdentity(new[] {
-					new Claim(ClaimTypes.Name, user.UserName),
-					 new Claim(ClaimTypes.Role, user.UserType==1 ? "Admin"
-									: user.UserType==2 ? "User" : "Guest")
-				}, CookieAuthenticationDefaults.AuthenticationScheme);
+                    if (!user.IsActive)
+                    {
+                        ModelState.AddModelError("inactive", "User is inactive");
+                        return View(loginModel);
+                    }
+
+                    var identity = new ClaimsIdentity(new[] {
+                    new Claim(ClaimTypes.Name, user.UserName),
+                     new Claim(ClaimTypes.Role, user.UserType==1 ? "Admin"
+                                    : user.UserType==2 ? "User" : "Guest")},
+                                    CookieAuthenticationDefaults.AuthenticationScheme);
 
 
-				var principal = new ClaimsPrincipal(identity);
+                    var principal = new ClaimsPrincipal(identity);
 
-				HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
-				CookieOptions options = new CookieOptions();
-				options.Expires = DateTimeOffset.MaxValue;
+                    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+                    CookieOptions options = new CookieOptions();
+                    options.Expires = DateTime.Now.AddHours(4);
 
-				if (user.UserType == 1)
-					return RedirectToAction("GetData", "Home");
-				if (user.UserType == 2 && user.IsActive == true)
-					return RedirectToAction("Video", "Home");
-			}
-			else
-			{
-				ViewBag.LoginErrorMessage = "Inavalid Username or Password";
-			}
+                    if (!String.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
+                        return Redirect(returnUrl);
+                    else  if (user.UserType == 1)
+                        return RedirectToAction("GetData", "Home");
+                    else if (user.UserType == 2 && user.IsActive == true)
+                        return RedirectToAction("Video", "Home");
+                }
+                else
+                {
+                    ModelState.AddModelError("invaliduser", "UserName or Password invalid.");
+                    return View(loginModel);
+                }
+            }
+            return View(loginModel);
+        }
 
-			//return RedirectToAction("Login");
-			return RedirectToAction("Index","Home");
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
 
-		}
-
-		public IActionResult Logout()
-		{
-			Response.Cookies.Delete("LoginCookie");
-			return RedirectToAction("/Home");
-		}
-	}
+            return RedirectToAction("Index", "Home");
+        }
+    }
 }

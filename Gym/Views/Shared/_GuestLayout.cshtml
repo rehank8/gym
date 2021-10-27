@@ -22,9 +22,12 @@
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </button>
-                        <a class="navbar-brand" href="/"><i class="icon-info-blocks material-icons">location_on</i>Shape</a>
+                        <a class="navbar-brand" href="/">
+                            <i class="icon-info-blocks material-icons">location_on</i>Shape
+                        </a>
+
                     </div>
-                    <div class="navbar-collapse collapse ">
+                    <div class="navbar-collapse collapse">
                         <ul class="nav navbar-nav ulnav">
                             <li class="@(ViewContext.RouteData.Values["Action"].ToString().ToLower() == "index" ? "active" : "")"><a name="ahome" class="waves-effect waves-dark" href="/">Home</a></li>
                             <li class="dropdown">
@@ -37,20 +40,35 @@
                                 </ul>
                             </li>
                             <li><a name="aservice" class="waves-effect waves-dark" href="services.html">Services</a></li>
-                            <li class="@(ViewContext.RouteData.Values["Action"].ToString().ToLower() == "demovideo" ? "active" : "")"><a name="avideos" class="waves-effect waves-dark" href="~/home/demovideo">Videos</a></li>
-                            <li class="@(ViewContext.RouteData.Values["Action"].ToString().ToLower() == "demoimages" ? "active" : "")"><a name="aimages" class="waves-effect waves-dark" href="~/home/demoimages">Gallery</a></li>
-                            <li class="@(ViewContext.RouteData.Values["Action"].ToString().ToLower() == "pricing" ? "active" : "")"><a name="apricing" class="waves-effect waves-dark" href="~/Home/Pricing">Pricing</a></li>
+                            <li class="@(ViewContext.RouteData.Values["Action"].ToString().ToLower() == "demovideo" ? "active" : "")">
+                                <a name="avideos" class="waves-effect waves-dark" href="~/home/demovideo">Videos</a>
+                            </li>
+                            <li class="@(ViewContext.RouteData.Values["Action"].ToString().ToLower() == "demoimages" ? "active" : "")">
+                                <a name="aimages" class="waves-effect waves-dark" href="~/home/demoimages">Gallery</a>
+                            </li>
+                            <li class="@(ViewContext.RouteData.Values["Action"].ToString().ToLower() == "pricing" ? "active" : "")">
+                                <a name="apricing" class="waves-effect waves-dark" href="~/Home/Pricing">Pricing</a>
+                            </li>
                             <li><a name="acontact" class="waves-effect waves-dark" href="contact.html">Contact</a></li>
-                            <li>
-                                @if (string.IsNullOrEmpty(Context.Request.Cookies["LoginCookie"]))
+
+                            <li class="@(ViewContext.RouteData.Values["Action"].ToString().ToLower() == "login" ? "active" : "")">
+                                @if (!User.Identity.IsAuthenticated)
                                 {
-                                    <a class="waves-effect waves-dark loginmodel" href="javascript:void(0)">Login</a>
+                                    <a class="waves-effect waves-dark loginmodel" href="~/Account/Login">Login</a>
                                 }
                                 else
                                 {
-                                    <a class="waves-effect waves-dark loginmodel" asp-controller="Account" asp-action="Logout">Logout</a>
+
+                                    <a class="waves-effect waves-dark loginmodel" asp-controller="Account" asp-action="Logout">
+                                        Logout
+                                    </a>
                                 }
                             </li>
+
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                <li><a style="color:#ec4141;text-transform:none;font-weight:700;font-size:1.5em" class="waves-effect waves-dark" href="javascript:void(0);">Welcome @User.Identity.Name</a></li>
+                            }
                             @*<li><a class="waves-effect waves-dark" href="#">Appointment</a></li>*@
                         </ul>
                     </div>
@@ -141,6 +159,8 @@
     </div>
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.16.0/jquery.validate.min.js"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.validation.unobtrusive/3.2.6/jquery.validate.unobtrusive.min.js"></script>
     @RenderSection("Scripts", required: false)
     <script type="text/javascript">
     </script>

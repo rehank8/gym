@@ -37,34 +37,42 @@
 						<a class="navbar-brand" href="index.html"><i class="icon-info-blocks material-icons">location_on</i>Shape</a>
 					</div>
 					<div class="navbar-collapse collapse ">
-						<ul class="nav navbar-nav">
-							<li class="active"><a class="waves-effect waves-dark" href="index.html">Home</a></li>
-							<li class="dropdown">
-								<a href="#" data-toggle="dropdown" class="dropdown-toggle waves-effect waves-dark">About Us <b class="caret"></b></a>
-								<ul class="dropdown-menu">
-									<li><a class="waves-effect waves-dark" href="about.html">Company</a></li>
-									<li><a class="waves-effect waves-dark" href="#">Our Team</a></li>
-									<li><a class="waves-effect waves-dark" href="#">News</a></li>
-									<li><a class="waves-effect waves-dark" href="#">Investors</a></li>
-								</ul>
-							</li>
-							<li><a class="waves-effect waves-dark" href="services.html">Services</a></li>
-							<li><a class="waves-effect waves-dark" href="~/home/demovideo">Videos</a></li>
-							<li><a class="waves-effect waves-dark" href="~/home/demoimages">Gallery</a></li>
-							<li><a class="waves-effect waves-dark" href="~/Home/Pricing">Pricing</a></li>
-							<li><a class="waves-effect waves-dark" href="contact.html">Contact</a></li>
-							<li>
-								@if (string.IsNullOrEmpty(Context.Request.Cookies["LoginCookie"]))
-								{
-									<a class="waves-effect waves-dark loginmodel" href="javascript:void(0)">Login</a>
-								}
-								else
-								{
-									<a class="waves-effect waves-dark loginmodel" asp-controller="Account" asp-action="Logout">Logout</a>
-								}
-							</li>
-							@*<li><a class="waves-effect waves-dark" href="#">Appointment</a></li>*@
-						</ul>
+                        <ul class="nav navbar-nav">
+                            <li class="active"><a class="waves-effect waves-dark" href="index.html">Home</a></li>
+                            <li class="dropdown">
+                                <a href="#" data-toggle="dropdown" class="dropdown-toggle waves-effect waves-dark">About Us <b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="waves-effect waves-dark" href="about.html">Company</a></li>
+                                    <li><a class="waves-effect waves-dark" href="#">Our Team</a></li>
+                                    <li><a class="waves-effect waves-dark" href="#">News</a></li>
+                                    <li><a class="waves-effect waves-dark" href="#">Investors</a></li>
+                                </ul>
+                            </li>
+                            <li><a class="waves-effect waves-dark" href="services.html">Services</a></li>
+                            <li><a class="waves-effect waves-dark" href="~/home/demovideo">Videos</a></li>
+                            <li><a class="waves-effect waves-dark" href="~/home/demoimages">Gallery</a></li>
+                            <li><a class="waves-effect waves-dark" href="~/Home/Pricing">Pricing</a></li>
+                            <li><a class="waves-effect waves-dark" href="contact.html">Contact</a></li>
+                            <li class="@(ViewContext.RouteData.Values["Action"].ToString().ToLower() == "login" ? "active" : "")">
+                                @if (!User.Identity.IsAuthenticated)
+                                {
+                                    <a class="waves-effect waves-dark loginmodel" href="~/Account/Login">Login</a>
+                                }
+                                else
+                                {
+
+                                    <a class="waves-effect waves-dark loginmodel" asp-controller="Account" asp-action="Logout">
+                                        Logout
+                                    </a>
+                                }
+                            </li>
+
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                <li><a style="color:#ec4141;text-transform:none;font-weight:700;font-size:1.5em" class="waves-effect waves-dark" href="javascript:void(0);">Welcome @User.Identity.Name</a></li>
+                            }
+                            @*<li><a class="waves-effect waves-dark" href="#">Appointment</a></li>*@
+                        </ul>
 					</div>
 				</div>
 			</div>
@@ -427,17 +435,7 @@
 @*<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>*@
 <script src="js/bootstrap.min.js"></script>
 <script type="text/javascript">
-	
-
-	$(document).ready(function (){
-		var errorMesage = '@TempData["LoginErrorMessage"]';
-		 
-		if(errorMesage == "Inavalid Username or Password") {
-			$('#loginModal').modal('show');
-		}
-	});
-
-	$('a.loginmodel').click(function () {
-		$('#loginModal').modal('show');
-	});
+	//$('a.loginmodel').click(function () {
+	//	//$('#loginModal').modal('show');
+	//});
 </script>
