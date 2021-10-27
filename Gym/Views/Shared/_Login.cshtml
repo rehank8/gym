@@ -1,10 +1,12 @@
 ﻿@model Gym.Models.UserModel
-
+@ViewBag.LoginErrorMessage
 <div class="container-fluid">
 	<div class="row" style="padding:20px">
 		<div class="col-md-12">
 			<form method="post" action="~/account/loginsave">
-				<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+				<div asp-validation-summary="ModelOnly" class="text-danger">
+					@ViewBag.LoginErrorMessage
+				</div>
 				<div class="form-group">
 					<label asp-for="UserName" class="control-label"></label>
 					<input asp-for="UserName" class="form-control" />

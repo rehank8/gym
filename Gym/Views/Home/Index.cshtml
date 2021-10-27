@@ -427,6 +427,16 @@
 @*<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>*@
 <script src="js/bootstrap.min.js"></script>
 <script type="text/javascript">
+	
+
+	$(document).ready(function (){
+		var errorMesage = '@TempData["LoginErrorMessage"]';
+		 
+		if(errorMesage == "Inavalid Username or Password") {
+			$('#loginModal').modal('show');
+		}
+	});
+
 	$('a.loginmodel').click(function () {
 		$('#loginModal').modal('show');
 	});
