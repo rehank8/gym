@@ -1,26 +1,27 @@
 ﻿@model LoginModel
 @{
-    Layout = "~/Views/Shared/_GuestLayout.cshtml";
-    var returnUrl = @Context.Request.Query["returnurl"];
+	Layout = "~/Views/Shared/_GuestLayout.cshtml";
+	var returnUrl = @Context.Request.Query["returnurl"];
 }
 <h3>Login</h3>
 <div class="background">
-    @using (Html.BeginForm("login", "account", routeValues: new { returnUrl = returnUrl }, FormMethod.Post, null, htmlAttributes: new { @id = "frmLogin" }))
-    {
-        <div asp-validation-summary="All" class="text-danger">
-        </div>
-        <div class="form-group">
-            <label asp-for="UserName" class="control-label" style="font-size: 1.8rem;"></label>
-            <input asp-for="UserName" class="form-control" style="width:400px;background-color:#eef4ff" />
-            @*<span asp-validation-for="UserName" class="text-danger"></span>*@
-        </div>
-        <div class="form-group">
-            <label asp-for="Password" class="control-label" style="font-size: 1.8rem;"></label>
-            <input asp-for="Password" type="password" class="form-control" style="width: 400px;background-color: #eef4ff" />
-            @*<span asp-validation-for="Password" class="text-danger"></span>*@
-        </div>
-        <div class="form-group">
-            <input type="submit" class="btn form-control" value="Login" />
-        </div>
-    }
+	@using (Html.BeginForm("login", "account", routeValues: new { returnUrl = returnUrl }, method: FormMethod.Post,
+		antiforgery: null, htmlAttributes: new { @id = "frmLogin" }))
+	{
+		<div asp-validation-summary="All" class="text-danger">
+		</div>
+		<div class="form-group">
+			<label asp-for="UserName" class="control-label" style="font-size: 1.8rem;"></label>
+			<input asp-for="UserName" class="form-control" style="width:400px;background-color:#eef4ff" />
+			@*<span asp-validation-for="UserName" class="text-danger"></span>*@
+		</div>
+		<div class="form-group">
+			<label asp-for="Password" class="control-label" style="font-size: 1.8rem;"></label>
+			<input asp-for="Password" type="password" class="form-control" style="width: 400px;background-color: #eef4ff" />
+			@*<span asp-validation-for="Password" class="text-danger"></span>*@
+		</div>
+		<div class="form-group">
+			<input type="submit" class="btn form-control" value="Login" />
+		</div>
+	}
 </div>
