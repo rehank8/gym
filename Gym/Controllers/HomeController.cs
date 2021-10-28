@@ -25,7 +25,7 @@ namespace Gym.Controllers
 			return View();
 		}
 
-        [Authorize(Roles = "Admin, User")]
+		[Authorize(Roles = "Admin, User")]
         [HttpGet]
         public IActionResult DemoImages()
         {

@@ -3,6 +3,8 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <meta name="author" content="http://webthemez.com" />
     <title>@ViewData["Title"] - Gym</title>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="~/css/materialize.min.css" media="screen,projection" />
@@ -15,7 +17,7 @@
         <!-- start header -->
         <header>
             <div class="navbar navbar-default navbar-static-top" style="position:relative">
-                <div class="container">
+                <div class="container-fluid" style="width:79%">
                     <div class="navbar-header">
                         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                             <span class="icon-bar"></span>
@@ -80,7 +82,7 @@
                 </div>
             </div>
         </header>
-        <div class="container" style="min-height:500px;">
+        <div class="container-fluid" style="min-height:500px;width:80%">
             <div class="row">
                 <div class="col-md-12" style="margin:10px;">
                     @RenderBody()
@@ -88,7 +90,7 @@
             </div>
         </div>
         <footer>
-            <div class="container">
+            <div class="container-fluid" style="width:79%" >
                 <div class="row">
                     <div class="col-sm-3">
                         <div class="widget">
@@ -139,7 +141,7 @@
                 </div>
             </div>
             <div id="sub-footer">
-                <div class="container">
+                <div class="container-fluid" style="width:79%">
                     <div class="row">
                         <div class="col-lg-6">
                             <div class="copyright">
@@ -162,10 +164,12 @@
             </div>
         </footer>
     </div>
-    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.js" ></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
     <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.16.0/jquery.validate.min.js"></script>
     <script src="https://ajax.aspnetcdn.com/ajax/jquery.validation.unobtrusive/3.2.6/jquery.validate.unobtrusive.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+
     @RenderSection("Scripts", required: false)
     <script type="text/javascript">
     </script>
