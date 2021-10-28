@@ -22,6 +22,10 @@ namespace Gym.Controllers
         [HttpGet]
         public async Task<IActionResult> Login()
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Index","Home");
+            }
             return View(new LoginModel());
         }
 
@@ -59,8 +63,6 @@ namespace Gym.Controllers
                     var principal = new ClaimsPrincipal(identity);
 
                     await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
-                    CookieOptions options = new CookieOptions();
-                    options.Expires = DateTime.Now.AddHours(4);
 
                     if (!String.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
                         return Redirect(returnUrl);
