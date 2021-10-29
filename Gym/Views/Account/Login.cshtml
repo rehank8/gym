@@ -1,27 +1,49 @@
 ﻿@model LoginModel
 @{
-	Layout = "~/Views/Shared/_GuestLayout.cshtml";
-	var returnUrl = @Context.Request.Query["returnurl"];
+    Layout = "~/Views/Shared/_GuestLayout.cshtml";
+    var returnUrl = @Context.Request.Query["returnurl"];
 }
-<h3>Login</h3>
-<div class="background">
-	@using (Html.BeginForm("login", "account", routeValues: new { returnUrl = returnUrl }, method: FormMethod.Post,
-		antiforgery: null, htmlAttributes: new { @id = "frmLogin" }))
-	{
-		<div asp-validation-summary="All" class="text-danger">
-		</div>
-		<div class="form-group">
-			<label asp-for="UserName" class="control-label" style="font-size: 1.8rem;"></label>
-			<input asp-for="UserName" class="form-control" style="width:400px;background-color:#eef4ff" />
-			@*<span asp-validation-for="UserName" class="text-danger"></span>*@
-		</div>
-		<div class="form-group">
-			<label asp-for="Password" class="control-label" style="font-size: 1.8rem;"></label>
-			<input asp-for="Password" type="password" class="form-control" style="width: 400px;background-color: #eef4ff" />
-			@*<span asp-validation-for="Password" class="text-danger"></span>*@
-		</div>
-		<div class="form-group">
-			<input type="submit" class="btn form-control" value="Login" />
-		</div>
-	}
+<style>
+    div.form-control {
+        display: flex;
+    }
+
+    div.validationSummary {
+        font-size: 1.5rem;
+    }
+
+    div.loginForm {
+        width: 50%;
+        margin: auto;
+    }
+
+    input.form-input {
+        width: 70%;
+        background-color: #eef4ff
+    }
+
+    .control-label {
+        font-size: 1.5rem;
+    }
+</style>
+<div class="background loginForm">
+    <h3>Login</h3>
+    @using (Html.BeginForm("login", "account", routeValues: new { returnUrl = returnUrl },
+      method: FormMethod.Post, antiforgery: null, htmlAttributes: new { @id = "frmLogin" }))
+    {
+        <div asp-validation-summary="All" class="text-danger validationSummary">
+        </div>
+        <div class="form-group">
+            <label asp-for="UserName" class="control-label"></label>
+            <input asp-for="UserName" class="form-control form-input" />
+        </div>
+        <div class="form-group">
+            <label asp-for="Password" class="control-label"></label>
+            <input asp-for="Password" type="password" class="form-control form-input" />
+           
+        </div>
+        <div class="form-group">
+            <input type="submit" class="btn form-control" value="Login" />
+        </div>
+    }
 </div>

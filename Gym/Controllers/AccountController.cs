@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Gym.Controllers
 {
@@ -20,13 +21,42 @@ namespace Gym.Controllers
             _db = gymContext;
         }
         [HttpGet]
-        public async Task<IActionResult> Login()
+        public IActionResult Login()
         {
             if (User.Identity.IsAuthenticated)
             {
-                return RedirectToAction("Index","Home");
+                return RedirectToAction("Index", "Home");
             }
             return View(new LoginModel());
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "User")]
+        public async Task<IActionResult> UserProfile()
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                var userId = int.Parse(User.Claims.FirstOrDefault(x => x.Type == "UserId").Value);
+
+                var user = await _db.UserModel.FindAsync(userId);
+
+                return View(user);
+
+            }
+            return RedirectToAction("login");
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "User")]
+        public async Task<IActionResult> UserProfile(UserModel userModel)
+        {
+            if (ModelState.IsValid)
+            {
+                _db.UserModel.Update(userModel);
+                await _db.SaveChangesAsync();
+            }
+
+            return View(userModel);
         }
 
         [HttpGet]
@@ -54,6 +84,7 @@ namespace Gym.Controllers
                     }
 
                     var identity = new ClaimsIdentity(new[] {
+                    new Claim("UserId", user.Id.ToString()),
                     new Claim(ClaimTypes.Name, user.UserName),
                      new Claim(ClaimTypes.Role, user.UserType==1 ? "Admin"
                                     : user.UserType==2 ? "User" : "Guest")},
@@ -66,7 +97,7 @@ namespace Gym.Controllers
 
                     if (!String.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
                         return Redirect(returnUrl);
-                    else  if (user.UserType == 1)
+                    else if (user.UserType == 1)
                         return RedirectToAction("GetData", "Home");
                     else if (user.UserType == 2 && user.IsActive == true)
                         return RedirectToAction("Video", "Home");
