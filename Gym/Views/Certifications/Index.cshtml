@@ -50,11 +50,13 @@
 				<td>
 					@Html.DisplayFor(modelItem => item.Description)
 				</td>
-				<td>
-					<a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
-					|
-					<a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-				</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                    |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    |
+                    <a asp-action="PrintCertificate" asp-route-id="@item.Id">Print</a>
+                </td>
 			</tr>
 		}
 	</tbody>
@@ -68,8 +70,7 @@
 <script src="js/bootstrap.min.js"></script>
 <script type="text/javascript">
 
-	$(document).ready(function () {
-		debugger;
+	$(document).ready(function () {	
 		$('#cert').DataTable();
 		document.getElementById('print').style.display = "none";
 	});
