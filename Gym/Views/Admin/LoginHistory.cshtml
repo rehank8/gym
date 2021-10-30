@@ -1,0 +1,63 @@
+﻿@model IEnumerable<Gym.Models.LoginHistory>
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+@{
+    ViewData["Title"] = "GetData";
+    var id = 0;
+}
+ 
+<link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css" />
+
+<h3><b></b></h3>
+ 
+<table class="display table" id="loginHistoryTable">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.UserName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IPAddress)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Action)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreatedDate)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IPAddress)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Action)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedDate)
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts{
+    <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $('#loginHistoryTable').DataTable();
+        });
+    </script>
+}
+
+

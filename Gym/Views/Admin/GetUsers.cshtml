@@ -85,14 +85,14 @@
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
 @*<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>*@
-<script src="js/bootstrap.min.js"></script>
+<script src="~/js/bootstrap.min.js"></script>
 <script type="text/javascript">
 
 	function edit(e) {
 		debugger;
 		$.ajax({
 			type: "GET",
-			url: '/Home/EditUser/' + e,
+			url: '@Url.Content("~/Admin/EditUser/")' + e,
 			contentType: "application/json; charset=utf-8",
 			datatype: "json",
 			success: function (data) {

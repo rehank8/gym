@@ -10,15 +10,19 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http.Features;
 
 namespace Gym.Controllers
 {
     public class AccountController : Controller
     {
         private readonly gymContext _db;
-        public AccountController(gymContext gymContext)
+        private readonly IHttpContextAccessor _accessor;
+
+        public AccountController(gymContext gymContext, IHttpContextAccessor accessor)
         {
             _db = gymContext;
+            _accessor = accessor;
         }
         [HttpGet]
         public IActionResult Login()
@@ -94,11 +98,28 @@ namespace Gym.Controllers
                     var principal = new ClaimsPrincipal(identity);
 
                     await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+                    var ipAddress = Request.HttpContext.Connection.RemoteIpAddress
+                                        ?? _accessor.HttpContext.Connection.RemoteIpAddress
+                                                ?? HttpContext.Features.Get<IHttpConnectionFeature>()?.RemoteIpAddress;
+
+                    var loginHistory = new LoginHistory
+                    {
+                        Action = ControllerContext.ActionDescriptor.ActionName,
+                        IPAddress = Convert.ToString(ipAddress),
+                        CreatedDate = DateTime.Now,
+                        UserId = user.Id,
+                        UserName = user.UserName,
+                        Id = 0
+                    };
+
+                    _db.LoginHistory.Add(loginHistory);
+                    await _db.SaveChangesAsync();
+
 
                     if (!String.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
                         return Redirect(returnUrl);
                     else if (user.UserType == 1)
-                        return RedirectToAction("GetData", "Home");
+                        return RedirectToAction("GetData", "Admin");
                     else if (user.UserType == 2 && user.IsActive == true)
                         return RedirectToAction("Video", "Home");
                 }
@@ -114,6 +135,24 @@ namespace Gym.Controllers
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+
+            var ipAddress = Request.HttpContext.Connection.RemoteIpAddress
+                                       ?? _accessor.HttpContext.Connection.RemoteIpAddress
+                                               ?? HttpContext.Features.Get<IHttpConnectionFeature>()?.RemoteIpAddress;
+            var userId = int.Parse(User.Claims.FirstOrDefault(x => x.Type == "UserId").Value);
+
+            var loginHistory = new LoginHistory
+            {
+                Action = ControllerContext.ActionDescriptor.ActionName,
+                IPAddress = Convert.ToString(ipAddress),
+                CreatedDate = DateTime.Now,
+                UserId = userId,
+                UserName = User.Identity.Name,
+                Id = 0
+            };
+
+            _db.LoginHistory.Add(loginHistory);
+            await _db.SaveChangesAsync();
 
             return RedirectToAction("Index", "Home");
         }

@@ -6,9 +6,6 @@ namespace Gym.Models
 {
     public partial class gymContext : DbContext
     {
-        public gymContext()
-        {
-        }
 
         public gymContext(DbContextOptions<gymContext> options)
             : base(options)
@@ -20,15 +17,16 @@ namespace Gym.Models
         public virtual DbSet<UserModel> UserModel { get; set; }
         public virtual DbSet<Images> Images { get; set; }
         public virtual DbSet<Videos> Videos { get; set; }
+        public virtual DbSet<LoginHistory> LoginHistory { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!optionsBuilder.IsConfigured)
-            {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer("Server=DESKTOP-R5S2I97;Database=gym;Trusted_Connection=True;MultipleActiveResultSets=true");
-            }
-        }
+        //        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //        {
+        //            if (!optionsBuilder.IsConfigured)
+        //            {
+        //#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
+        //                optionsBuilder.UseSqlServer("Server=DESKTOP-R5S2I97;Database=gym;Trusted_Connection=True;MultipleActiveResultSets=true");
+        //            }
+        //        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -93,7 +91,7 @@ namespace Gym.Models
 
             modelBuilder.Entity<Images>(entity =>
             {
-                // entity.HasKey(e => e.Id).HasName("Id");
+                entity.HasKey(e => e.Id).HasName("Id");
                 entity.Property(e => e.Id).HasColumnName("Id");
 
                 entity.Property(e => e.imagepath)
@@ -108,7 +106,7 @@ namespace Gym.Models
 
             modelBuilder.Entity<Videos>(entity =>
             {
-                //entity.HasKey(e => e.Id).HasName("Id");
+                entity.HasKey(e => e.Id).HasName("Id");
                 entity.Property(e => e.Id).HasColumnName("Id");
 
                 entity.Property(e => e.videopath)
@@ -118,6 +116,30 @@ namespace Gym.Models
                 entity.Property(e => e.videodescription)
                    .HasColumnName("videodescription")
                    .HasMaxLength(1024);
+            });
+
+            modelBuilder.Entity<LoginHistory>(entity =>
+            {
+                entity.HasKey(e => e.Id).HasName("Id");
+                entity.Property(e => e.Id).HasColumnName("Id");
+
+                entity.Property(e => e.UserId)
+                .HasColumnName("UserId");
+
+                entity.Property(e => e.UserName)
+                   .HasColumnName("UserName")
+                   .HasMaxLength(100);
+
+                entity.Property(e => e.IPAddress)
+                   .HasColumnName("IPAddress")
+                   .HasMaxLength(200);
+
+                entity.Property(e => e.Action)
+                  .HasColumnName("Action")
+                  .HasMaxLength(512);
+
+                entity.Property(e => e.CreatedDate)
+                  .HasColumnName("CreatedDate");
             });
         }
     }
