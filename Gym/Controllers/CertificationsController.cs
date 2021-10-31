@@ -20,8 +20,8 @@ namespace Gym.Controllers
         // GET: Certifications
         public ActionResult Index()
         {
-            //var data = _db.Certifications.ToList();
-            List<Certifications> data = GetCertificateData();
+            var data = _db.Certifications.ToList();
+            //List<Certifications> data = GetCertificateData();
 
             ViewBag.CertificationsList = data;
             return View(data);
@@ -29,8 +29,8 @@ namespace Gym.Controllers
 
         public ActionResult PrintCertificate(int id)
         {
-           // var data = _db.Certifications.ToList();
-            List<Certifications> data = GetCertificateData();
+             var data = _db.Certifications.ToList();
+            //List<Certifications> data = GetCertificateData();
 
             return View(data.FirstOrDefault(x => x.Id == id));
         }
@@ -93,7 +93,7 @@ namespace Gym.Controllers
         // GET: Certifications/Edit/5
         public ActionResult Edit(int id)
         {
-            var data = _db.Certifications.Find(id);
+            var data = _db.Certifications.FirstOrDefault(x => x.Id == id);
             return View(data);
         }
 

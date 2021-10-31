@@ -22,6 +22,7 @@ namespace Gym.Controllers
 
 		public IActionResult Index()
 		{
+			@ViewData["Title"] = "Home";
 			return View();
 		}
 
@@ -41,12 +42,6 @@ namespace Gym.Controllers
             return View(models);
         }
 
-		[Authorize(Roles = "User")]
-		[HttpGet]
-		public IActionResult Video()
-		{
-			return View();
-		}
 
 		//[HttpPost]
 		//public IActionResult Login()

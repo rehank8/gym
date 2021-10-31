@@ -1,0 +1,24 @@
+﻿@model List<Videos>
+@{
+    ViewData["Title"] = "Video";
+    Layout = "~/Views/Shared/_customerLayout.cshtml";
+}
+
+<h4>Videos</h4>
+
+@foreach (var item in Model)
+{
+    <div style="width:350px;float:left;margin:10px;">
+        <video width="320" height="220" poster="~/admin/videos/@item.videopath" controls>
+            <source src="~/admin/videos/@item.videopath#t=0.5" type="video/mp4">
+        </video>
+        <div style="padding:10px 5px;">
+            <span>
+                @item.videodescription
+                <input type="hidden" id="hdnImageId" name="hdnImageId" value="@item.Id" />
+            </span>
+        </div>
+    </div>
+
+}
+

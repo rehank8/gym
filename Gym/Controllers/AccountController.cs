@@ -38,6 +38,7 @@ namespace Gym.Controllers
         [Authorize(Roles = "User")]
         public async Task<IActionResult> UserProfile()
         {
+            ViewData["Title"] = "UserProfile";
             if (User.Identity.IsAuthenticated)
             {
                 var userId = int.Parse(User.Claims.FirstOrDefault(x => x.Type == "UserId").Value);
@@ -54,10 +55,13 @@ namespace Gym.Controllers
         [Authorize(Roles = "User")]
         public async Task<IActionResult> UserProfile(UserModel userModel)
         {
+            ViewData["Title"] = "UserProfile";
             if (ModelState.IsValid)
             {
                 _db.UserModel.Update(userModel);
                 await _db.SaveChangesAsync();
+
+                return RedirectToAction("Logout");
             }
 
             return View(userModel);
@@ -119,9 +123,9 @@ namespace Gym.Controllers
                     if (!String.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
                         return Redirect(returnUrl);
                     else if (user.UserType == 1)
-                        return RedirectToAction("GetData", "Admin");
+                        return RedirectToAction("Index", "Admin");
                     else if (user.UserType == 2 && user.IsActive == true)
-                        return RedirectToAction("Video", "Home");
+                        return RedirectToAction("Index", "Customer");
                 }
                 else
                 {

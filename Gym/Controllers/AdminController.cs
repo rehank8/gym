@@ -20,8 +20,15 @@ namespace Gym.Controllers
             _db = gymContext;
         }
 
-		[HttpGet]
-		public IActionResult GetData()
+        [HttpGet]
+        public IActionResult Index()
+        {
+            ViewData["Title"] = "Admin Dashboard";
+            return View();
+        }
+
+        [HttpGet]
+		public IActionResult Appointments()
 		{
 			return View(_db.Appointments.ToList());
 		}
@@ -67,7 +74,7 @@ namespace Gym.Controllers
         }
 
         [HttpGet]
-		public IActionResult GetUsers()
+		public IActionResult Users()
 		{
 			return View(_db.UserModel.ToList());
 		}
