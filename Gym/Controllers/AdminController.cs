@@ -244,6 +244,7 @@ namespace Gym.Controllers
         [HttpGet]
         public IActionResult LoginHistory()
         {
+            ViewData["Title"] = "Login History";
             return View(_db.LoginHistory.OrderByDescending(x=>x.CreatedDate).ToList());
         }
     }

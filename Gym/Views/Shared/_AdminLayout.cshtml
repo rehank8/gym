@@ -9,52 +9,76 @@
     <link rel="stylesheet" href="~/css/site.css" />
     <style>
         body {
+            margin: 0px;
             font-family: "Lato", sans-serif;
-            padding: 0px;
+            padding:0px;
         }
 
-        .sidenav {
-            height: 100%;
+      
+        .sidebar {
+            margin: 0;
+            padding: 0;
             width: 200px;
+            background-color: #111111; /*#f1f1f1;*/
             position: fixed;
-            z-index: 1;
-            top: 0;
-            left: 0;
-            background-color: #f1f1f1;
-            overflow-x: hidden;
-            padding-top: 20px;
+            height: 100%;
+            overflow: auto;
         }
 
-            .sidenav a {
-                padding: 6px 6px 6px 32px;
-                text-decoration: none;
-                font-size: 25px;
-                color: #818181;
+            .sidebar a {
                 display: block;
+                color: #fff;
+                padding: 18px;
+                text-decoration: none;
+                font-size: 15px;
             }
 
-                .sidenav a:hover {
-                    color: #111;
+                .sidebar a.active {
+                    background-color: #ec4141;
+                    color: #ffffff;
                 }
 
-        .main {
-            margin-left: 200px; /* Same as the width of the sidenav */
+                .sidebar a:hover:not(.active) {
+                    background-color: #808080;
+                    color: white;
+                    text-decoration: none;
+                }
+
+        div.content {
+            margin-left: 200px;
+            padding: 1px 16px;
+           
+        }
+        div#mySidenav {
+            padding-top: 30px;
+        }
+        @@media screen and (max-width: 700px) {
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+            }
+
+                .sidebar a {
+                    float: left;
+                }
+
+            div.content {
+                margin-left: 0;
+            }
         }
 
-        @@media screen and (max-height: 450px) {
-            .sidenav {
-                padding-top: 15px;
+        @@media screen and (max-width: 400px) {
+            .sidebar a {
+                text-align: center;
+                float: none;
             }
-
-                .sidenav a {
-                    font-size: 18px;
-                }
         }
     </style>
 </head>
 <body>
     <header>
-        <div class="text-center p-3" style="background-color:orangered;text-align:right;position:relative;top:0;width:100%; height:2.5rem">
+        <div class="text-center p-3" style="background-color:#ec4141;text-align:right;position:relative;top:0;width:100%; height:2.5rem">
             <span style="width:99%;right:0;float:left;color:white;font-size:1.2em;font-weight:700">
                 <a href="~/" style="color:white;text-decoration:none">Back to home</a>
                 <a href="~/Account/Logout" style="color:white;text-decoration:none;padding:5px;">Logout</a>
@@ -63,14 +87,14 @@
     </header>
     <div class="row">
         <div class="col-md-2">
-            <div id="mySidenav" class="sidenav">
-                @*<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>*@
-                <a href="~/Admin/Appointments">Appointments</a>
-                <a href="~/Admin/Images">Image</a>
-                <a href="~/Admin/Videos">Videos</a>
-                <a href="~/Admin/Users">Users</a>
-                <a href="~/Certifications">Certification</a>
-                <a href="~/Admin/LoginHistory">Login History</a>
+            <div id="mySidenav" class="sidebar">
+                <a class="@(ViewContext.RouteData.Values["Action"].ToString().ToLower() == "index" ? "active" : "")" href="~/Admin">Dashboard</a>
+                <a class="@(ViewContext.RouteData.Values["Action"].ToString().ToLower() == "appointments" ? "active" : "")" href="~/Admin/Appointments">Appointments</a>
+                <a class="@(ViewContext.RouteData.Values["Action"].ToString().ToLower() == "images" ? "active" : "")" href="~/Admin/Images">Image</a>
+                <a class="@(ViewContext.RouteData.Values["Action"].ToString().ToLower() == "videos" ? "active" : "")" href="~/Admin/Videos">Videos</a>
+                <a class="@(ViewContext.RouteData.Values["Action"].ToString().ToLower() == "users" ? "active" : "")" href="~/Admin/Users">Users</a>
+                <a class="@(ViewContext.RouteData.Values["Action"].ToString().ToLower() == "certifications" ? "active" : "")" href="~/Certifications">Certification</a>
+                <a class="@(ViewContext.RouteData.Values["Action"].ToString().ToLower() == "loginhistory" ? "active" : "")" href="~/Admin/LoginHistory">Login History</a>
             </div>
         </div>
         <div class="col-md-10" style="margin:10px 10px 10px 250px">
@@ -81,7 +105,7 @@
 
 
     <footer style="background-color:none;padding:0px;">
-        <div class="text-center p-3" style="background-color:orangered ; position:fixed;bottom:0;width:100%; height:2.5rem">
+        <div class="text-center p-3" style="background-color:#ec4141;position:fixed;bottom:0;width:100%; height:2.5rem">
         </div>
     </footer>
 
@@ -90,48 +114,5 @@
     <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.16.0/jquery.validate.min.js"></script>
     <script src="https://ajax.aspnetcdn.com/ajax/jquery.validation.unobtrusive/3.2.6/jquery.validate.unobtrusive.min.js"></script>
     @RenderSection("Scripts", required: false)
-    <script type="text/javascript">
-
-        function openNav() {
-            document.getElementById("mySidenav").style.width = "250px";
-        }
-
-        /* Set the width of the side navigation to 0 */
-        function closeNav() {
-            document.getElementById("mySidenav").style.width = "0";
-        }
-
-        function openNav() {
-            document.getElementById("mySidenav").style.width = "250px";
-            document.getElementById("main").style.marginLeft = "250px";
-            document.body.style.backgroundColor = "rgba(0,0,0,0.4)";
-        }
-
-        /* Set the width of the side navigation to 0 and the left margin of the page content to 0, and the background color of body to white */
-        function closeNav() {
-            document.getElementById("mySidenav").style.width = "0";
-            document.getElementById("main").style.marginLeft = "0";
-            document.body.style.backgroundColor = "white";
-        }
-
-        function openNav() {
-            document.getElementById("mySidenav").style.width = "100%";
-        }
-
-        /* Close/hide the sidenav */
-        function closeNav() {
-            document.getElementById("mySidenav").style.width = "0";
-        }
-
-        function openNav() {
-            document.getElementById("mySidenav").style.display = "block";
-        }
-
-        /* Close/hide the sidenav */
-        function closeNav() {
-            document.getElementById("mySidenav").style.display = "none";
-        }
-    </script>
-
 </body>
 </html>
