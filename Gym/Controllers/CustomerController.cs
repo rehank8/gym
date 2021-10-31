@@ -30,5 +30,15 @@ namespace Gym.Controllers
             var models = _db.Videos.OrderByDescending(x => x.Id).ToList();
             return View(models);
         }
+
+        [HttpGet]
+        public IActionResult ListPayments()
+        {
+            var userId = int.Parse(User.Claims.FirstOrDefault(x => x.Type == "UserId").Value);
+            var userPayments = _db.Payment.Where(x => x.UserId == userId)
+                               .OrderByDescending(x => x.CreatedDate)
+                                .ToList();
+            return View(userPayments);
+        }
     }
 }

@@ -18,6 +18,7 @@ namespace Gym.Models
         public virtual DbSet<Images> Images { get; set; }
         public virtual DbSet<Videos> Videos { get; set; }
         public virtual DbSet<LoginHistory> LoginHistory { get; set; }
+        public virtual DbSet<Payment> Payment { get; set; }
 
         //        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         //        {
@@ -137,6 +138,26 @@ namespace Gym.Models
                 entity.Property(e => e.Action)
                   .HasColumnName("Action")
                   .HasMaxLength(512);
+
+                entity.Property(e => e.CreatedDate)
+                  .HasColumnName("CreatedDate");
+            });
+
+            modelBuilder.Entity<Payment>(entity =>
+            {
+                entity.HasKey(e => e.Id).HasName("Id");
+                entity.Property(e => e.Id).HasColumnName("Id");
+
+                entity.Property(e => e.UserId)
+                .HasColumnName("UserId");
+
+                entity.Property(e => e.UserName)
+                   .HasColumnName("UserName")
+                   .HasMaxLength(100);
+
+                entity.Property(e => e.Amount)
+                   .HasColumnName("Amount")
+                   .HasColumnType("Decimal");
 
                 entity.Property(e => e.CreatedDate)
                   .HasColumnName("CreatedDate");
