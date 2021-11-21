@@ -12,9 +12,9 @@
 <table class="display table" id="gyEventsTable">
     <thead>
         <tr>
-            <th>
+            @*<th>
                 @Html.DisplayNameFor(model => model.EventName)
-            </th>
+            </th>*@
             <th>
                 @Html.DisplayNameFor(model => model.Description)
             </th>
@@ -33,9 +33,9 @@
         @foreach (var item in Model)
         {
             <tr>
-                <td>
+                @*<td>
                     @Html.DisplayFor(modelItem => item.EventName)
-                </td>
+                </td>*@
                 <td>
                     @Html.DisplayFor(modelItem => item.Description)
                 </td>
@@ -43,7 +43,7 @@
                     @Html.DisplayFor(modelItem => item.EventDateTime)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.EventDuration)
+                    @Html.DisplayFor(modelItem => item.EventDuration) min
                 </td>
                 <td>
                     @if (!string.IsNullOrEmpty(item.EventImagePath))
