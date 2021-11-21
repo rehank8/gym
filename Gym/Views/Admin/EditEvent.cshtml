@@ -1,0 +1,56 @@
+﻿@model Gym.Models.Event
+
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>Edit Event</h2>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="EditEvent" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input asp-for="Id" type="hidden" />
+            <input asp-for="EventImagePath" type="hidden" />
+            <div class="form-group">
+                <label asp-for="EventName" class="control-label"></label>
+                <input asp-for="EventName" class="form-control" />
+                <span asp-validation-for="EventName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EventDateTime" class="control-label"></label>
+                <input asp-for="EventDateTime" class="form-control" />
+                <span asp-validation-for="EventDateTime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EventDuration" class="control-label"></label>
+                <input asp-for="EventDuration" class="form-control" />
+                <span asp-validation-for="EventDuration" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                @if (!string.IsNullOrEmpty(Model.EventImagePath))
+                {
+                    <img src="~/admin/gymevents/@Model.EventImagePath" class="img-rounded" alt="Cinque Terre"
+                         width="250" height="200">
+                }
+            </div>
+            <div class="form-group">
+                <label asp-for="EventImagePath" class="control-label">Change Image</label>
+                <input type="file" class="form-control" name="fileupload" id="fileupload" accept="image/x-png,image/gif,image/jpeg" />
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="GetEvents">Back to List</a>
+</div>
+

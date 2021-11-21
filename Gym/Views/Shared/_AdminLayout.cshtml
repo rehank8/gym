@@ -7,14 +7,15 @@
     <link href="~/css/style.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css" />
     <style>
         body {
             margin: 0px;
             font-family: "Lato", sans-serif;
-            padding:0px;
+            padding: 0px;
         }
 
-      
+
         .sidebar {
             margin: 0;
             padding: 0;
@@ -47,11 +48,12 @@
         div.content {
             margin-left: 200px;
             padding: 1px 16px;
-           
         }
+
         div#mySidenav {
             padding-top: 30px;
         }
+
         @@media screen and (max-width: 700px) {
             .sidebar {
                 width: 100%;
@@ -93,6 +95,7 @@
                 <a class="@(ViewContext.RouteData.Values["Action"].ToString().ToLower() == "images" ? "active" : "")" href="~/Admin/Images">Image</a>
                 <a class="@(ViewContext.RouteData.Values["Action"].ToString().ToLower() == "videos" ? "active" : "")" href="~/Admin/Videos">Videos</a>
                 <a class="@(ViewContext.RouteData.Values["Action"].ToString().ToLower() == "users" ? "active" : "")" href="~/Admin/Users">Users</a>
+                <a class="@(ViewContext.RouteData.Values["Action"].ToString().ToLower() == "getevents" ? "active" : "")" href="~/admin/GetEvents">Events</a>
                 <a class="@(ViewContext.RouteData.Values["Action"].ToString().ToLower() == "certifications" ? "active" : "")" href="~/Certifications">Certification</a>
                 <a class="@(ViewContext.RouteData.Values["Action"].ToString().ToLower() == "loginhistory" ? "active" : "")" href="~/Admin/LoginHistory">Login History</a>
             </div>
@@ -113,6 +116,7 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
     <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.16.0/jquery.validate.min.js"></script>
     <script src="https://ajax.aspnetcdn.com/ajax/jquery.validation.unobtrusive/3.2.6/jquery.validate.unobtrusive.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
     @RenderSection("Scripts", required: false)
 </body>
 </html>

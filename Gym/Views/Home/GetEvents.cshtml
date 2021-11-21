@@ -1,0 +1,70 @@
+﻿@model IEnumerable<Gym.Models.Event>
+@{
+    Layout = "~/Views/Shared/_GuestLayout.cshtml";
+}
+@{
+    ViewData["Title"] = "Events";
+}
+
+
+
+<h3><b>Login History</b></h3>
+<table class="display table" id="gyEventsTable">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.EventName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EventDateTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EventDuration)
+            </th>
+            <th>
+                @Html.DisplayName("Event Image")
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EventName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EventDateTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EventDuration)
+                </td>
+                <td>
+                    @if (!string.IsNullOrEmpty(item.EventImagePath))
+                    {
+                        <img src="~/admin/gymevents/@item.EventImagePath" class="img-rounded" alt="Cinque Terre"
+                             width="150" height="100">
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts{
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $('#gyEventsTable').DataTable();
+        });
+    </script>
+}
+
+

@@ -28,10 +28,10 @@ namespace Gym.Controllers
         }
 
         [HttpGet]
-		public IActionResult Appointments()
-		{
-			return View(_db.Appointments.ToList());
-		}
+        public IActionResult Appointments()
+        {
+            return View(_db.Appointments.ToList());
+        }
 
         [HttpGet]
         public IActionResult EditCustomer(long? id)
@@ -74,10 +74,10 @@ namespace Gym.Controllers
         }
 
         [HttpGet]
-		public IActionResult Users()
-		{
-			return View(_db.UserModel.ToList());
-		}
+        public IActionResult Users()
+        {
+            return View(_db.UserModel.ToList());
+        }
 
         [HttpGet]
         public IActionResult EditUser(long? id)
@@ -115,7 +115,7 @@ namespace Gym.Controllers
                 _db.UserModel.Update(userModel);
                 _db.SaveChanges();
             }
-            return RedirectToAction("GetUsers","Admin");
+            return RedirectToAction("GetUsers", "Admin");
         }
 
         [HttpGet]
@@ -245,7 +245,99 @@ namespace Gym.Controllers
         public IActionResult LoginHistory()
         {
             ViewData["Title"] = "Login History";
-            return View(_db.LoginHistory.OrderByDescending(x=>x.CreatedDate).ToList());
+            return View(_db.LoginHistory.OrderByDescending(x => x.CreatedDate).ToList());
+        }
+
+        [HttpGet]
+        public IActionResult GetEvents()
+        {
+            ViewData["Title"] = "Gym Events";
+            return View(_db.Event.OrderByDescending(x => x.EventDateTime).ToList());
+        }
+
+        [HttpGet]
+        public IActionResult CreateEvent()
+        {
+            var gymEvent = new Event() { EventDateTime = DateTime.Now };
+            return View(gymEvent);
+        }
+
+        [HttpPost]
+        public IActionResult CreateEvent(Event gymEvent, IFormFile fileupload)
+        {
+            if (ModelState.IsValid)
+            {
+                if (fileupload != null)
+                {
+                    if (fileupload == null || fileupload.Length == 0)
+                        return Content("file not selected");
+
+                    var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "admin", "gymevents");
+                    if (!Directory.Exists(path))
+                    {
+                        Directory.CreateDirectory(path);
+                    }
+                    path = path + "\\" + fileupload.FileName;
+                    using (var stream = new FileStream(path, FileMode.Create))
+                    {
+                        fileupload.CopyTo(stream);
+                    }
+
+                    gymEvent.EventImagePath = fileupload.FileName;
+                }
+
+                _db.Event.Add(gymEvent);
+                _db.SaveChanges();
+                ModelState.Clear();
+            }
+            return RedirectToAction("GetEvents", "Admin");
+        }
+
+        [HttpGet]
+        public IActionResult EditEvent(int id)
+        {
+            var gymEvent = _db.Event.FirstOrDefault(x => x.Id == id);
+            return View(gymEvent);
+        }
+
+        [HttpGet]
+        public IActionResult DeleteEvent(int id)
+        {
+            var gymEvent = _db.Event.FirstOrDefault(x => x.Id == id);
+            _db.Event.Remove(gymEvent);
+            _db.SaveChanges();
+            return RedirectToAction("GetEvents");
+        }
+
+        [HttpPost]
+        public IActionResult EditEvent(Event gymEvent, IFormFile fileupload)
+        {
+            if (ModelState.IsValid)
+            {
+                if (fileupload != null)
+                {
+                    if (fileupload == null || fileupload.Length == 0)
+                        return Content("file not selected");
+
+                    var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "admin", "gymevents");
+                    if (!Directory.Exists(path))
+                    {
+                        Directory.CreateDirectory(path);
+                    }
+                    path = path + "\\" + fileupload.FileName;
+                    using (var stream = new FileStream(path, FileMode.Create))
+                    {
+                        fileupload.CopyTo(stream);
+                    }
+
+                    gymEvent.EventImagePath = fileupload.FileName;
+                }
+
+                _db.Event.Update(gymEvent);
+                _db.SaveChanges();
+                ModelState.Clear();
+            }
+            return RedirectToAction("GetEvents", "Admin");
         }
     }
 }

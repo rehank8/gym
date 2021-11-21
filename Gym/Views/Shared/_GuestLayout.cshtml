@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="~/css/materialize.min.css" media="screen,projection" />
     <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
     <link href="~/css/style.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css" />
 
 </head>
 <body>
@@ -47,6 +48,9 @@
                             </li>
                             <li class="@(ViewContext.RouteData.Values["Action"].ToString().ToLower() == "demoimages" ? "active" : "")">
                                 <a name="aimages" class="waves-effect waves-dark" href="~/home/demoimages">Gallery</a>
+                            </li>
+                            <li class="@(ViewContext.RouteData.Values["Action"].ToString().ToLower() == "getevents" ? "active" : "")">
+                                <a name="aevent" class="waves-effect waves-dark" href="~/Home/GetEvents">Events</a>
                             </li>
                             <li class="@(ViewContext.RouteData.Values["Action"].ToString().ToLower() == "pricing" ? "active" : "")">
                                 <a name="apricing" class="waves-effect waves-dark" href="~/Home/Pricing">Pricing</a>

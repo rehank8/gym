@@ -1,0 +1,80 @@
+﻿@model IEnumerable<Gym.Models.Event>
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+@{
+    ViewData["Title"] = "Gym - Events";
+}
+
+
+
+<h3><b>Login History</b></h3>
+<div class="col-md-12 col-lg-12  col-sm-12  align-right" style="text-align:right">
+    <a href="~/admin/CreateEvent"><input type="button" class="btn btn-success" value="Create" /></a>
+</div>
+<br />
+<table class="display table" id="gyEventsTable">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.EventName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EventDateTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EventDuration)
+            </th>
+            <th>
+                @Html.DisplayName("Event Image")
+            </th>
+            <th>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EventName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EventDateTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EventDuration)
+                </td>
+                <td>
+                    @if(!string.IsNullOrEmpty(item.EventImagePath))
+                    {                   
+                        <img src="~/admin/gymevents/@item.EventImagePath" class="img-rounded" alt="Cinque Terre"
+                         width="150" height="100">
+                    }
+                </td>
+                <td>
+                    <a href="~/admin/EditEvent/@item.Id">Edit</a>&nbsp;&nbsp;
+                    <a href="~/admin/DeleteEvent/@item.Id">Remove</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts{
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $('#gyEventsTable').DataTable();
+        });
+    </script>
+}
+
+

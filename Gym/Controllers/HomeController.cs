@@ -100,9 +100,15 @@ namespace Gym.Controllers
 			return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
 		}
 
-		
+		[HttpGet]
+		public IActionResult GetEvents()
+		{
+			ViewData["Title"] = "Gym Events";
+			return View(_db.Event.OrderByDescending(x => x.EventDateTime).ToList());
+		}
 
 
-		
+
+
 	}
 }

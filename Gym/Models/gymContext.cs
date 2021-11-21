@@ -19,6 +19,7 @@ namespace Gym.Models
         public virtual DbSet<Videos> Videos { get; set; }
         public virtual DbSet<LoginHistory> LoginHistory { get; set; }
         public virtual DbSet<Payment> Payment { get; set; }
+        public virtual DbSet<Event> Event { get; set; }
 
         //        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         //        {
@@ -161,6 +162,27 @@ namespace Gym.Models
 
                 entity.Property(e => e.CreatedDate)
                   .HasColumnName("CreatedDate");
+            });
+
+            modelBuilder.Entity<Event>(entity =>
+            {
+                entity.HasKey(e => e.Id).HasName("Id");
+                entity.Property(e => e.Id).HasColumnName("Id");
+
+                entity.Property(e => e.EventName)
+                .HasColumnName("EventName");
+
+                entity.Property(e => e.Description)
+                   .HasColumnName("Description");
+
+                entity.Property(e => e.EventDateTime)
+                   .HasColumnName("EventDateTime");
+
+                entity.Property(e => e.EventImagePath)
+                  .HasColumnName("EventImagePath");
+
+                entity.Property(e => e.EventImagePath)
+                  .HasColumnName("EventImagePath");
             });
         }
     }
